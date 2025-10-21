@@ -1,56 +1,56 @@
 const {} = require('../models/index');
  
 class Controller {
-    static async name (req, res){
+    static async getRegister (req, res){
         try {
             
         } catch (error) {
             res.send(error)
         }
     }
-    static async name (req, res){
+    static async postRegister (req, res){
         try {
             
         } catch (error) {
             res.send(error)
         }
     }
-    static async name (req, res){
+    static async getLogin (req, res){
         try {
             
         } catch (error) {
             res.send(error)
         }
     }
-    static async name (req, res){
+    static async postLogin (req, res){
         try {
             
         } catch (error) {
             res.send(error)
         }
     }
-    static async name (req, res){
+    static async getUser (req, res){
         try {
             
         } catch (error) {
             res.send(error)
         }
     }
-    static async name (req, res){
+    static async postUser (req, res){
         try {
             
         } catch (error) {
             res.send(error)
         }
     }
-    static async name (req, res){
+    static async getPost (req, res){
         try {
             
         } catch (error) {
             res.send(error)
         }
     }
-    static async name (req, res){
+    static async postPost (req, res){
         try {
             
         } catch (error) {
