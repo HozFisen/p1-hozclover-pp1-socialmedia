@@ -18,9 +18,9 @@
     "role": "user"
   },
   {
-    "email": "manager@example.com",
-    "password": "manager123",
-    "username": "manager",
-    "role": "admin"
+    "email": "poki@example.com",
+    "password": "poki123",
+    "username": "poki",
+    "role": "user"
   }
 ]
