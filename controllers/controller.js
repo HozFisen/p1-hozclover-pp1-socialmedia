@@ -1,16 +1,23 @@
-const {} = require('../models/index');
+const {User, UserProfile, Post} = require('../models/index');
  
 class Controller {
     static async getRegister (req, res){
         try {
-            
+            res.render('index')
         } catch (error) {
             res.send(error)
         }
     }
     static async postRegister (req, res){
         try {
-            
+            const {email, username, password} = req.body;
+            await User.create({
+                email,
+                password,
+                username,
+                role: 'User'
+            })
+            res.redirect('/login')
         } catch (error) {
             res.send(error)
         }
