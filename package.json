@@ -1,0 +1,29 @@
+{
+  "name": "p1-hozclover-pp1-socialmedia",
+  "version": "1.0.0",
+  "description": "Created for Phase 1 Hactiv8 Pair Project\r Theme: Social Media",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HozFisen/p1-hozclover-pp1-socialmedia.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HozFisen/p1-hozclover-pp1-socialmedia/issues"
+  },
+  "homepage": "https://github.com/HozFisen/p1-hozclover-pp1-socialmedia#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.3"
+  }
+}
