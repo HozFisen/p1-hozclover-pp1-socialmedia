@@ -21,6 +21,6 @@
     "email": "manager@example.com",
     "password": "manager123",
     "username": "manager",
-    "role": "user"
+    "role": "admin"
   }
 ]
