@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Reaction.belongsToMany(models.Post, {foreignKey:"PostId"})
+      Reaction.hasMany(models.PostReaction, {foreignKey:"ReactionId"})
+      Reaction.belongsToMany(models.Post, {through:models.PostReaction, foreignKey:'ReactionId'})
     }
   }
   Reaction.init({
