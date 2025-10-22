@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Technology",
+    "description": "Berita dan pembahasan seputar perkembangan teknologi, gadget, AI, dan dunia digital."
+  },
+  {
+    "name": "Lifestyle",
+    "description": "Gaya hidup, tips kesehatan, kebugaran, dan keseimbangan hidup sehari-hari."
+  },
+  {
+    "name": "Education",
+    "description": "Artikel dan postingan seputar pendidikan, pengembangan diri, dan ilmu pengetahuan."
+  },
+  {
+    "name": "Entertainment",
+    "description": "Film, musik, game, dan hal-hal menarik untuk hiburan."
+  },
+  {
+    "name": "Business",
+    "description": "Topik tentang bisnis, keuangan, investasi, dan strategi pemasaran."
+  },
+  {
+    "name": "Science",
+    "description": "Penelitian ilmiah, eksperimen, dan penemuan baru di dunia sains."
+  },
+  {
+    "name": "Travel",
+    "description": "Cerita perjalanan, destinasi wisata, dan pengalaman eksplorasi dunia."
+  },
+  {
+    "name": "Food",
+    "description": "Kuliner, resep, dan tips memasak dari berbagai daerah dan budaya."
+  }
+]
