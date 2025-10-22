@@ -3,6 +3,9 @@ const Controller = require('../Controllers/controller')
 const users = require('./users') 
 const posts = require('./posts')
 
+// Display semua posts
+router.use("/", Controller.posts)
+
 // Register Dulu
 router.get("/register", Controller.getRegister);
 router.post("/register", Controller.postRegister);

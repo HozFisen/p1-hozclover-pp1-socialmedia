@@ -1,9 +1,16 @@
 const {User, UserProfile, Post} = require('../models/index');
  
 class Controller {
-    static async getRegister (req, res){
+    static async posts (req, res) {
         try {
             res.render('index')
+        } catch (error) {
+            res.send(error)
+        }
+    }
+    static async getRegister (req, res){
+        try {
+            res.render('register')
         } catch (error) {
             res.send(error)
         }
