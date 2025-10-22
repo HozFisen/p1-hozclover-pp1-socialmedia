@@ -11,16 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasOne(models.UserProfile, {foreignKey:"UserId"})
-      User.belongsToMany(models.Post, {foreignKey:"UserId"})
+      User.hasMany(models.Post, {foreignKey:'UserId'})
     }
   }
   User.init({
     email: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
       allowNull: false,
+      unique:true,
       validate: {
         notEmpty:{msg: "Please insert your email."},
-        notNull:{msg: "Please insert your email."}
+        notNull:{msg: "Please insert your email."},
+        unique:{msg: "E-mail has already registered!"}
       }
     },
     password: {
@@ -34,9 +36,11 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique:true,
       validate: {
         notEmpty:{msg: "Please make a username"},
-        notNull:{msg: "Please make a username"}
+        notNull:{msg: "Please make a username"},
+        unique:{msg: "Username is already Taken!"}
       }
     },
     role: { // Harus default ke user.

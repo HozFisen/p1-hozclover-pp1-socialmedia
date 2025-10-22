@@ -11,12 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
     PostReaction.belongsTo(models.Post, { foreignKey: 'PostId' });
-    PostReaction.belongsToMany(models.Reaction, { foreignKey: 'ReactionId' });
+    PostReaction.belongsTo(models.Reaction, { foreignKey: 'ReactionId' });
+    PostReaction.belongsTo(models.Users, {foreignKey: "UserId"})
     }
   }
   PostReaction.init({
     ReadtionId: DataTypes.INTEGER,
-    PostId: DataTypes.INTEGER
+    PostId: DataTypes.INTEGER,
+    UserId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'PostReaction',

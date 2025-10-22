@@ -13,8 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Post.belongsTo(models.User, {foreignKey:'UserId'})
       Post.hasOne(models.Category, {foreignKey:'CategoryId'})
-      Post.hasMany(models.PostReaction, {foreignKey:"PostId"})
-      Post.belongsToMany(models.Post, {through:models.PostReaction, foreignKey:'PostId'})
+      Post.belongsToMany(models.Reaction, {through:models.PostReaction, foreignKey:'PostId'})
 
       
     }

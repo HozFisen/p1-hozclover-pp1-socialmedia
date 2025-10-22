@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ReadtionId: {
+      ReactionId: {
       type: Sequelize.INTEGER,
       references: {
         allowNull:false,
@@ -24,6 +24,16 @@ module.exports = {
       type: Sequelize.INTEGER,
       references: {
         model: 'Posts',
+        key: 'id'
+      },
+      onUpdate: 'cascade',
+      onDelete: 'cascade'
+    },
+      UserId: {
+        allowNull:false,
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'Users',
         key: 'id'
       },
       onUpdate: 'cascade',

@@ -18,7 +18,7 @@ module.exports = {
       tagLine: {
         type: Sequelize.STRING(50)
       },
-      isPrivat: {
+      isPrivate: {
         type: Sequelize.BOOLEAN
       },
       createdAt: {
