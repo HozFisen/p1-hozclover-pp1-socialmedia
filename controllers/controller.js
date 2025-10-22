@@ -3,7 +3,8 @@ const {User, UserProfile, Post} = require('../models/index');
 class Controller {
     static async posts (req, res) {
         try {
-            res.render('index')
+            let data = await Post.findAll()
+            res.render('index', {data})
         } catch (error) {
             res.send(error)
         }

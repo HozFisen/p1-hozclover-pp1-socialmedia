@@ -18,10 +18,17 @@ module.exports = {
       imageUrl: {
         type: Sequelize.STRING
       },
+      CategoryId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model:'Categories',
+          key:'id',
+        }
+      },
       UserId: {
       type: Sequelize.INTEGER,
       references: {
-        model: 'Posts',
+        model: 'Users',
         key: 'id'
       },
       onUpdate: 'cascade',
