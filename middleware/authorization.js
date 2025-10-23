@@ -1,6 +1,6 @@
 const { User } = require('../models');
 
-async function authorized(req, res, next) {
+async function authorize(req, res, next) {
     try {
         const targetId = req.params.id;
         const viewerId = req.session.userId;
@@ -27,4 +27,4 @@ async function authorized(req, res, next) {
     }
 }
 
-module.exports = { authorized };
+module.exports = { authorize };
