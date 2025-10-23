@@ -34,11 +34,14 @@ class userController {
     static async editProfile(req, res) {
         try {
             const id = req.session.userId
+            // const { id } = req.params; 
             const data = await UserProfile.findOne({where:{UserId:id}})
 
             if (!data) {
                 return res.status(404).send("Error 404 - Profile not found!");
             }
+            console.log(data,'000000000000000000000000000000000');
+            
             
             res.render('editProfile', { data, error: null});
 
@@ -49,8 +52,8 @@ class userController {
     }
     
     static async postEditProfile(req, res) {
-        const id = req.session.userId;
         try {
+            const id = req.session.userId;
             console.log("EDIT PROFILE",id)
             const { firstName, lastName, tagLine, isPrivate, profilePicture } = req.body;
 
@@ -71,11 +74,7 @@ class userController {
 
         } catch (error) {
             console.error("Error di postEditProfile:", error);
-            const userProfileData = await User.findByPk(id, { include: [UserProfile] });
-            res.render('editProfile', { 
-                data: userProfileData,
-                error: error.message || "Failed to make changes"
-            });
+            res.render('editProfile')
         }
     }
 }

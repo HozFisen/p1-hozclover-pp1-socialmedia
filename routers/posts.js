@@ -6,6 +6,6 @@ const {auth} = require('../middleware/authentication')
 router.get("/:id/like", auth ,postController.like); 
 router.get("/add", auth, postController.getPost); 
 router.post("/add", auth, postController.postPost); 
-// router.get("/:id", postController.userProfle); 
+router.get("/:id/delete", auth, postController.delete); 
 
 module.exports = router;

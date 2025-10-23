@@ -54,6 +54,11 @@
 </head>
 <body>
   <div class="container">
+    <% if (error) { %>
+    <div class="alert alert-danger" role="alert">
+        <%= error %>
+    </div>
+<% } %>
     <h2>Login</h2>
     <% if (typeof error !== 'undefined' && error) { %>
       <div class="alert alert-danger"><%= error %></div>
@@ -71,5 +76,6 @@
     </form>
     <p class="text-center">Don't have an account? <a href="/register">Register</a></p>
   </div>
+  <%- include('bottom') %>
 </body>
 </html>

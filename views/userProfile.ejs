@@ -95,6 +95,22 @@
     .btn-back:hover {
       background: #333;
     }
+  .delete-btn {
+    display: none; /* default tersembunyi */
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+  }
+
+  .delete-btn button {
+    padding: 6px 10px;
+    font-size: 0.95rem; /* sedikit lebih besar */
+  }
+
+  .post-item:hover .delete-btn {
+    display: block; /* muncul saat hover */
+  }
   </style>
 </head>
 <body>
@@ -110,7 +126,7 @@
   <div class="container">
     <div class="profile-header">
       <img 
-        src="<%= user.UserProfile?.profilePicture || '/default-pp.jpg' %>" 
+        src="<%= user.UserProfile?.profilePicture || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlR_n4KeBSnrxA8Fl8xOiWLWxhvH0X6bKp8A&s' %>" 
         alt="User Profile Picture"
       >
       <div class="username"><%= user.username %></div>
@@ -124,24 +140,30 @@
       <% } %>
       <% if (active.userId === user.id || active.role === 'admin') { %>
             <a href="/users/<%= user.id %>/edit" class="edit-profile d-block mt-2">Edit Profile</a>
-      <% } %>
+            <% } %>
        </div>
       
+<!-- User Posts -->
+<div class="post-grid">
+  <% if (user.Posts && user.Posts.length > 0) { %>
+    <% user.Posts.forEach(post => { %>
+      <div class="post-item">
+        <img src="<%= post.imageUrl %>" alt="">
+        <div class="post-overlay"><%= post.content.substring(0, 40) %>...</div>
 
-    <!-- User Posts -->
-    <div class="post-grid">
-      <% if (user.Posts && user.Posts.length > 0) { %>
-        <% user.Posts.forEach(post => { %>
-          <div class="post-item">
-            <img src="<%= post.imageUrl %>" alt="">
-            <div class="post-overlay"><%= post.content.substring(0, 40) %>...</div>
-          </div>
-        <% }) %>
-      <% } else { %>
-        <p class="text-center text-muted mt-4">This user hasn’t posted anything yet.</p>
-      <% } %>
-    </div>
-  </div>
+       <% if (active.userId === user.id || active.role === 'admin') { %>
+        <form action="/posts/<%= post.id %>/delete" method="POST" class="delete-btn">
+        <button type="submit" class="btn btn-dark">Delete</button>
+        </form>
+    <% } %>
+
+      </div>
+    <% }) %>
+  <% } else { %>
+    <p class="text-center text-muted mt-4">This user hasn’t posted anything yet.</p>
+  <% } %>
+</div>
+
   <%- include('bottom') %>
 </body>
 </html>
