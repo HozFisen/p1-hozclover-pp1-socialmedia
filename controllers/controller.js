@@ -98,7 +98,13 @@ class Controller {
                 include: [UserProfile, Post] 
             });
 
-            res.render('userProfile', { user });
+            // const loggedInUserId = req.session.userId; 
+            const loggedInUserId = 3; 
+
+        res.render('userProfile', { 
+            user,
+            loggedInUserId: loggedInUserId 
+        });
         } catch (error) {
             res.send(error);
         }
@@ -158,6 +164,68 @@ class Controller {
     //     // Dummy handler untuk tombol reaction
     //     res.send(`Reaction ${req.body.reaction} added to post ${req.body.postId}`);
     // };
+
+
+    static async editProfile(req, res) {
+        try {
+            
+            const { id } = req.params; 
+            const data = await UserProfile.findByPk(id);
+
+            if (!data) {
+                return res.status(404).send("Profil tidak ditemukan.");
+            }
+
+           
+            console.log(data,'TTTTTTTTTTTTTTTTTTTTTTTTTTTT');
+            
+            res.render('editProfile', { 
+                data,
+                error: null
+            });
+
+        } catch (error) {
+            console.error("Error di getEditProfile:", error);
+            res.send(error);
+        }
+    }
+    
+    static async putEditProfile(req, res) {
+        try {
+            const { id } = req.params;
+            const { firstName, lastName, tagLine, isPrivate } = req.body;
+
+            const updatedProfileData = {
+                firstName: firstName,
+                lastName: lastName,
+                tagLine: tagLine,
+                isPrivate: isPrivate === 'on' ? true : false 
+            };
+            
+            await UserProfile.update(updatedProfileData, {
+                where: { UserId: id }
+            });
+
+            // Note: Jika kolom UserProfile memiliki 'UserId' sebagai Foreign Key ke User,
+            // Anda mungkin perlu memastikan ID dimasukkan:
+            /* await UserProfile.upsert({ ...updatedProfileData, UserId: id }); 
+            */
+
+
+            res.redirect(`/users/${id}`); 
+
+        } catch (error) {
+            console.error("Error di putEditProfile:", error);
+            // Jika ada error (misalnya validasi), render ulang form dengan pesan error
+            const userProfileData = await User.findByPk(id, { include: [UserProfile] });
+            res.render('editProfile', { 
+                userProfile: userProfileData,
+                error: error.message || "Gagal menyimpan perubahan."
+            });
+        }
+    }
+
+
     static async like(req, res) {
         try {
             const postId = req.params.id;

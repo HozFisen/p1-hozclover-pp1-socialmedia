@@ -120,9 +120,11 @@
       <% if (user.UserProfile?.isPrivate) { %>
         <span class="badge bg-secondary">Private Account</span>
       <% } %>
-
-      <a href="/users/<%= user.id %>/edit" class="edit-profile d-block mt-2">Edit Profile</a>
-    </div>
+      <% if (loggedInUserId && loggedInUserId == user.id) { %>
+            <a href="/users/<%= user.id %>/edit" class="edit-profile d-block mt-2">Edit Profile</a>
+      <% } %>
+       </div>
+      
 
     <!-- User Posts -->
     <div class="post-grid">
