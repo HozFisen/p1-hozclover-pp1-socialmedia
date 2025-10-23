@@ -1,20 +1,19 @@
 const router = require('express').Router();
-const Controller = require('../Controllers/controller')
-const users = require('./users') 
-const posts = require('./posts')
+const Controller = require('../controllers/controller');
+const users = require('./users');
+const posts = require('./posts');
 
-// Display semua posts
-router.use("/", Controller.posts)
+// --- HALAMAN UTAMA ---
+router.get("/", Controller.posts);
 
-// Register Dulu
+// --- AUTH ---
 router.get("/register", Controller.getRegister);
 router.post("/register", Controller.postRegister);
+router.get("/login", Controller.getLogin);
+router.post("/login", Controller.postLogin);
 
-// Login
-// router.get("/login", Controller.getLogin)
-// router.post("/login", Controller.postLogin)
-
-// router.get("/users", users);
-// router.get("/posts", posts);
+// --- USERS & POSTS ROUTES ---
+router.use("/users", users);
+router.use("/posts", posts);
 
 module.exports = router;

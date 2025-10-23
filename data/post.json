@@ -3,7 +3,6 @@
     "title": "Teknologi AI yang Mengubah Dunia",
     "content": "Kecerdasan buatan kini telah menjadi bagian penting dalam kehidupan manusia modern, mulai dari asisten virtual hingga sistem keamanan canggih. Di masa depan, AI diperkirakan akan berperan dalam hampir setiap aspek kehidupan.",
     "imageUrl": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
-    "date": "2025-10-22T09:00:00Z",
     "CategoryId": 1,
     "UserId": 1
   },
@@ -11,7 +10,6 @@
     "title": "Gaya Hidup Minimalis: Hidup Lebih Sedikit, Bahagia Lebih Banyak",
     "content": "Minimalisme bukan hanya soal memiliki sedikit barang, tetapi juga tentang fokus pada hal-hal yang benar-benar penting. Banyak orang kini mulai meninggalkan budaya konsumtif demi ketenangan batin.",
     "imageUrl": "https://images.unsplash.com/photo-1556761175-4b46a572b786",
-    "date": "2025-10-20T15:30:00Z",
     "CategoryId": 2,
     "UserId": 2
   },
@@ -19,7 +17,6 @@
     "title": "Belajar Efektif di Era Digital",
     "content": "Platform online memberikan kebebasan belajar tanpa batas. Namun, tantangan terbesar adalah menjaga fokus dan konsistensi di tengah banyaknya distraksi digital.",
     "imageUrl": "https://images.unsplash.com/photo-1584697964403-3e4f3b5e2fd3",
-    "date": "2025-10-18T13:10:00Z",
     "CategoryId": 3,
     "UserId": 1
   },
@@ -27,7 +24,6 @@
     "title": "Film yang Menginspirasi Perubahan Hidup",
     "content": "Beberapa film tidak hanya menghibur, tetapi juga membuka cara pandang baru terhadap kehidupan. Dari kisah perjuangan hingga nilai kemanusiaan yang mendalam.",
     "imageUrl": "https://images.unsplash.com/photo-1505685296765-3a2736de412f",
-    "date": "2025-10-15T17:45:00Z",
     "CategoryId": 4,
     "UserId": 3
   },
@@ -35,7 +31,6 @@
     "title": "Tips Membangun Bisnis Online dari Nol",
     "content": "Bisnis online memberikan peluang besar bagi siapa pun yang mau belajar dan mencoba. Fokuslah pada konsistensi, riset pasar, dan pelayanan pelanggan yang baik.",
     "imageUrl": "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
-    "date": "2025-10-10T11:20:00Z",
     "CategoryId": 5,
     "UserId": 2
   },
@@ -43,7 +38,6 @@
     "title": "Eksperimen Terbaru di Dunia Fisika Kuantum",
     "content": "Para ilmuwan kini semakin mendekati pemahaman tentang realitas di level subatomik. Penelitian kuantum membawa kita pada kemungkinan komputer kuantum yang revolusioner.",
     "imageUrl": "https://images.unsplash.com/photo-1504386106331-3e4e71712b38",
-    "date": "2025-10-08T10:00:00Z",
     "CategoryId": 6,
     "UserId": 1
   },
@@ -51,7 +45,6 @@
     "title": "Menjelajahi Alam Indonesia: Keindahan yang Tak Terbantahkan",
     "content": "Dari Sabang hingga Merauke, Indonesia menyimpan keindahan alam luar biasa. Mulai dari pantai tropis hingga pegunungan hijau yang menenangkan jiwa.",
     "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-    "date": "2025-10-05T08:45:00Z",
     "CategoryId": 7,
     "UserId": 3
   },
@@ -59,7 +52,6 @@
     "title": "Kreasi Makanan Rumahan yang Gampang dan Enak",
     "content": "Masakan sederhana bisa menjadi luar biasa jika dibuat dengan cinta. Inilah beberapa resep cepat dan lezat untuk menemani waktu santai di rumah.",
     "imageUrl": "https://images.unsplash.com/photo-1512058564366-c9e3e046c337",
-    "date": "2025-10-01T07:30:00Z",
     "CategoryId": 8,
     "UserId": 2
   }
