@@ -211,13 +211,14 @@
 
           <!-- Tombol Like & Comment menyatu -->
           <div class="reaction-bar">
-            <form method="POST" action="/posts/<%= post.id %>/like">
+            <form action="/posts/<%= post.id %>/like" method="POST">
               <button type="submit" class="reaction-btn">
                 <i class="bi bi-heart"></i> <span><%= post.likeCount || 0 %></span>
               </button>
             </form>
           </div>
-        </div>
+            
+          </div>
       <% }) %>
     <% } else { %>
       <p class="text-center text-secondary">No posts yet.</p>

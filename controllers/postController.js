@@ -1,4 +1,4 @@
-const { User, UserProfile, Category, Post } = require('../models/index');
+const { User, UserProfile, Category, Post, PostReaction } = require('../models/index');
 const bcrypt = require('bcryptjs')
 const salt = bcrypt.genSaltSync(10)
 
@@ -40,7 +40,7 @@ class postController {
         try {
             const { id } = req.params;
             const user = await User.findByPk(id, {
-                include: [UserProfile, Post] 
+                include: [UserProfile, Post]
             });
 
             res.render('userProfile', { user });
@@ -67,7 +67,7 @@ class postController {
         try {
             // Ambil kategori untuk dropdown di form
             const categories = await Category.findAll({
-                 attributes: ['id', 'name', 'description', 'createdAt', 'updatedAt']
+                attributes: ['id', 'name', 'description', 'createdAt', 'updatedAt']
             }) // bisa di trim attributes... mungkin?
             res.render('addPost', { categories })
         } catch (error) {
@@ -80,7 +80,7 @@ class postController {
             const { title, content, imageUrl, date, CategoryId } = req.body;
             const UserId = req.session.userId; // dari user login
             // console.log(req.body,'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW');
-            
+
             await Post.create({
                 title,
                 content,
@@ -105,34 +105,52 @@ class postController {
     // };
     static async like(req, res) {
         try {
-            const postId = req.params.id;
-            const userId = req.session.userId;
+            const UserId = req.session.userId;
+            const id = req.params.id;
 
-            // Cari reaction "like"
+            if (!UserId) return res.status(401).send("Login dulu!");
+
+            // Ambil reaction default like/unlike (misal Reaction id=1 = like, id=2 = unlike)
             const likeReaction = await Reaction.findOne({ where: { name: 'like' } });
+            const unlikeReaction = await Reaction.findOne({ where: { name: 'unlike' } });
 
-            // Cek apakah user sudah like post ini
-            const existing = await PostReaction.findOne({
-                where: {
-                    UserId: userId,
-                    PostId: postId,
-                    ReactionId: likeReaction.id
-                }
-            });
+            // Cek apakah user sudah punya reaction di post ini
+            let postReact = await PostReaction.findOne({ where: { UserId, id } });
 
-            if (existing) {
-                // sudah like -> unlike
-                await existing.destroy();
+            if (!postReact) {
+                // belum ada reaction, kasih like default
+                await PostReaction.create({ UserId, id, ReactionId: likeReaction.id });
+                likeReaction.point += 1;
+                await likeReaction.save();
+                current = 'like';
             } else {
-                // belum -> like
-                await PostReaction.create({
-                    userId,
-                    postId,
-                    ReactionId: likeReaction.id
-                });
+                // sudah ada reaction, toggle
+                if (postReact.ReactionId === likeReaction.id) {
+                    // ubah ke unlike
+                    postReact.ReactionId = unlikeReaction.id;
+                    await postReact.save();
+
+                    likeReaction.point -= 1;
+                    await likeReaction.save();
+
+                    current = 'unlike';
+                } else {
+                    // ubah ke like
+                    postReact.ReactionId = likeReaction.id;
+                    await postReact.save();
+
+                    likeReaction.point += 1;
+                    await likeReaction.save();
+
+                    current = 'like';
+                }
             }
 
-            res.redirect('back');
+            // Hitung total point like
+            const totalLikes = await PostReaction.count({ where: { id, ReactionId: likeReaction.id } });
+
+            res.json({ totalLikes, current });
+
         } catch (error) {
             console.error(error);
         }
@@ -140,9 +158,9 @@ class postController {
 
     static async delete(req, res) {
         try {
-            const {id} = req.params;
+            const { id } = req.params;
             await Post.destroy({
-                where:id
+                where: id
             })
             res.redirect(`/users/${id}`)
         } catch (err) {
@@ -151,7 +169,7 @@ class postController {
     }
     static async delete(req, res) {
         try {
-            const {id} = req.params;
+            const { id } = req.params;
             let data = await Post.findByPk(id);
             await data.destroy()
             res.redirect(`/users/${id}`)
