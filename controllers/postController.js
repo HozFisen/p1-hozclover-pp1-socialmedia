@@ -4,7 +4,6 @@ const salt = bcrypt.genSaltSync(10)
 
 class postController {
 
-<<<<<<< HEAD
     // Dummy data
     static async posts(req, res) {
         try {
@@ -64,8 +63,7 @@ class postController {
     //         res.send(error)
     //     }
     // }
-=======
->>>>>>> 3b5632bc467d0a016e7ebbe71cc14f2e8c703758
+
     static async getPost(req, res) {
         try {
             // Ambil kategori untuk dropdown di form
@@ -106,94 +104,64 @@ class postController {
     //     // Dummy handler untuk tombol reaction
     //     res.send(`Reaction ${req.body.reaction} added to post ${req.body.postId}`);
     // };
+
+
+    // Hitung total point like
     static async like(req, res) {
+        const userId = req.session.userId;
+        const postId = req.params.postId;
+
         try {
-            const UserId = req.session.userId;
-            const id = req.params.id;
+            // Check if user already reacted
+            const existingReaction = await PostReaction.findOne({
+                where: { UserId: userId, PostId: postId }
+            });
 
-            if (!UserId) return res.status(401).send("Login dulu!");
-
-            // Ambil reaction default like/unlike (misal Reaction id=1 = like, id=2 = unlike)
-            const likeReaction = await Reaction.findOne({ where: { name: 'like' } });
-            const unlikeReaction = await Reaction.findOne({ where: { name: 'unlike' } });
-
-            // Cek apakah user sudah punya reaction di post ini
-            let postReact = await PostReaction.findOne({ where: { UserId, id } });
-
-            if (!postReact) {
-                // belum ada reaction, kasih like default
-                await PostReaction.create({ UserId, id, ReactionId: likeReaction.id });
-                likeReaction.point += 1;
-                await likeReaction.save();
-                current = 'like';
-            } else {
-                // sudah ada reaction, toggle
-                if (postReact.ReactionId === likeReaction.id) {
-                    // ubah ke unlike
-                    postReact.ReactionId = unlikeReaction.id;
-                    await postReact.save();
-
-                    likeReaction.point -= 1;
-                    await likeReaction.save();
-
-                    current = 'unlike';
-                } else {
-                    // ubah ke like
-                    postReact.ReactionId = likeReaction.id;
-                    await postReact.save();
-
-                    likeReaction.point += 1;
-                    await likeReaction.save();
-
-                    current = 'like';
-                }
+            if (existingReaction) {
+                return res.status(400).json({ message: "You have already reacted to this post." });
             }
 
-            // Hitung total point like
-            const totalLikes = await PostReaction.count({ where: { id, ReactionId: likeReaction.id } });
+            // Create reaction
+            await PostReaction.create({
+                UserId: userId,
+                PostId: postId
+            });
 
-            res.json({ totalLikes, current });
+            // Increment likesCount atomically
+            await Post.increment('likes', { by: 1, where: { id: postId } });
 
+            res.json({ message: "Reaction added successfully!" });
         } catch (error) {
-            console.error(error);
+            console.log(error);
+            res.status(500).json({ error: "Something went wrong." });
         }
     }
 
-// <<<<<<< HEAD
-//     static async delete(req, res) {
-//         try {
-//             const { id } = req.params;
-//             await Post.destroy({
-//                 where: id
-//             })
-//             res.redirect(`/users/${id}`)
-//         } catch (err) {
-//             res.send(err);
-//         }
-// =======
+
     static delete(req, res) {
-    const { id } = req.params;
-    const {userId} = req.query;
-    // Doesn't go back to users/id, sad.
-    Post.destroy({ where: { id } })
-        .then(() => {
-        res.redirect(`/users/${userId}`);
-        })
-        .catch((err) => {
-        console.log(err)
-        res.send(err);
-        });
+        const { id } = req.params;
+        const { userId } = req.query;
+        // Doesn't go back to users/id, sad.
+        Post.destroy({ where: { id } })
+            .then(() => {
+                res.redirect(`/users/${userId}`);
+            })
+            .catch((err) => {
+                console.log(err)
+                res.send(err);
+            });
     }
-    static async delete(req, res) {
-        try {
-            const { id } = req.params;
-            let data = await Post.findByPk(id);
-            await data.destroy()
-            res.redirect(`/users/${id}`)
-        } catch (err) {
-            res.send(err);
-        }
-    }
+    // static async delete(req, res) {
+    //     try {
+    //         const { id } = req.params;
+    //         const { userId } = req.query;
+    //         let data = await Post.findByPk(id);
+    //         await data.destroy()
+    //         res.redirect(`/users/${userId}`)
+    //     } catch (err) {
+    //         res.send(err);
+    //     }
+    // }
 }
 
 module.exports = postController;

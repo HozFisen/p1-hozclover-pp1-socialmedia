@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
+    /* ... (CSS Anda di sini) ... */
     body {
       background: #fff;
       color: #000;
@@ -17,41 +18,8 @@
     .navbar-brand { color: #fff !important; font-weight: 600; }
     
     /* 🛠️ CSS KUSTOM UNTUK SEARCH CAPSULE 🛠️ */
-    .search-capsule {
-      background-color: transparent; /* Ubah latar belakang menjadi transparan */
-      border: 1px solid #fff; /* Tambahkan border putih 1px */
-      border-radius: 50px; /* Bentuk kapsul */
-      padding: 0 12px;
-      height: 38px;
-      display: flex;
-      align-items: center;
-      flex-grow: 1; 
-      max-width: 300px;
-      margin-right: 15px;
-      margin-left: 20px;
-    }
-
-    .search-capsule .form-control {
-      border: none;
-      background-color: transparent;
-      padding-left: 0;
-      font-size: 0.95rem;
-      color: #fff; /* Teks input harus putih agar terlihat di navbar hitam */
-    }
-    .search-capsule .form-control::placeholder {
-        color: #ccc; /* Warna placeholder abu-abu terang */
-        opacity: 0.8;
-    }
-    .search-capsule .form-control:focus {
-      box-shadow: none;
-    }
-    .search-capsule .bi-search {
-      color: #fff; /* Ikon search juga putih */
-      margin-right: 8px;
-    }
-    /* -------------------------------------- */
-
-
+    /* ... (CSS Search Anda) ... */
+    
     .post-card {
       background: #fff;
       color: #000;
@@ -146,21 +114,19 @@
   </style>
 </head>
 <body>
-  <!-- Navbar atas -->
-<nav class="navbar navbar-expand-lg">
+  <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">ECHOZ</a>
       
      <div class="d-flex ms-auto align-items-center">
     <% if (active.userId) { %>
-      <h3>- Welcome <%= active.username %>!</h3>
-      <a href="/logout" class="btn btn-outline-light ms-auto">Logout</a>
+      <span class="text-white me-3 d-none d-sm-inline">Welcome, <%= active.username %>!</span> 
+      <a href="/logout" class="btn btn-outline-light">Logout</a>
       <% } else { %>
-      <a href="/register" class="btn btn-outline-light ms-auto">Register</a>
+      <a href="/register" class="btn btn-outline-light">Register</a>
       <a href="/login" class="btn btn-outline-light ms-2">Login</a>
       <% } %>
 
-    <!-- Tombol sort/filter kategori -->
     <div class="dropdown ms-2">
         <button class="btn btn-sm btn-dark btn-category-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Pilih Kategori">
             <i class="bi bi-list"></i>
@@ -190,7 +156,6 @@
     </div>
   </nav>
 
-  <!-- Konten Post -->
   <div class="container mt-4">
     <% if (posts && posts.length > 0) { %>
       <% posts.forEach(post => { %>
@@ -209,28 +174,29 @@
             <small class="text-muted">Posted on <%= new Date(post.createdAt).toLocaleDateString() %></small>
           </div>
 
-          <!-- Tombol Like & Comment menyatu -->
           <div class="reaction-bar">
             <form action="/posts/<%= post.id %>/like" method="POST">
               <button type="submit" class="reaction-btn">
-                <i class="bi bi-heart"></i> <span><%= post.likeCount || 0 %></span>
+                <i class="bi bi-heart"></i> <span><%= post.likes || 0 %></span>
               </button>
             </form>
           </div>
             
-          </div>
-      <% }) %>
+        </div> <% }) %>
     <% } else { %>
       <p class="text-center text-secondary">No posts yet.</p>
     <% } %>
   </div>
 
-  <!-- Navbar bawah tetap -->
   <div class="bottom-navbar">
     <a href="/"><i class="bi bi-house-fill"></i></a>
     <a href="/posts/add"><i class="bi bi-pencil-fill"></i></a>
     <a href="/users"><i class="bi bi-people-fill"></i></a>
-    <a href="/users/<%= active.userId %>"><i class="bi bi-person-circle"></i></a>
+    <% if (active.userId) { %>
+        <a href="/users/<%= active.userId %>"><i class="bi bi-person-circle"></i></a>
+    <% } else { %>
+        <a href="/login"><i class="bi bi-person-circle"></i></a>
+    <% } %>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
