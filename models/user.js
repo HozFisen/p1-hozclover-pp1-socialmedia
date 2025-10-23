@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: { // Harus default ke user.
       type: DataTypes.STRING,
+      defaultValue:'user'
     },
   }, {
     hooks: {

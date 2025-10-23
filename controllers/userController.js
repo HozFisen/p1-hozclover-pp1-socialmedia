@@ -30,19 +30,14 @@ class userController {
     }
     static async editProfile(req, res) {
         try {
-            
-            const id = req.session.userId; 
-            console.log("ID PROFILE ID PROFILE!",id)
+            const id = req.session.userId
             const data = await UserProfile.findOne({where:{UserId:id}})
 
             if (!data) {
                 return res.status(404).send("Error 404 - Profile not found!");
             }
             
-            res.render('editProfile', { 
-                data,
-                error: null
-            });
+            res.render('editProfile', { data, error: null});
 
         } catch (error) {
             console.error("Unnown Error in editProfile", error);
@@ -51,13 +46,15 @@ class userController {
     }
     
     static async postEditProfile(req, res) {
+        const id = req.session.userId;
         try {
-            const { id } = req.session.userId;
-            const { firstName, lastName, tagLine, isPrivate } = req.body;
+            console.log("EDIT PROFILE",id)
+            const { firstName, lastName, tagLine, isPrivate, profilePicture } = req.body;
 
             const updatedProfileData = {
                 firstName,
                 lastName,
+                profilePicture,
                 tagLine,
                 isPrivate: isPrivate === 'on' ? true : false 
             };
@@ -66,21 +63,15 @@ class userController {
                 where: { UserId: id }
             });
 
-            // Note: Jika kolom UserProfile memiliki 'UserId' sebagai Foreign Key ke User,
-            // Anda mungkin perlu memastikan ID dimasukkan:
-            /* await UserProfile.upsert({ ...updatedProfileData, UserId: id }); 
-            */
-
 
             res.redirect(`/users/${id}`); 
 
         } catch (error) {
             console.error("Error di postEditProfile:", error);
-            // Jika ada error (misalnya validasi), render ulang form dengan pesan error
             const userProfileData = await User.findByPk(id, { include: [UserProfile] });
             res.render('editProfile', { 
-                userProfile: userProfileData,
-                error: error.message || "Gagal menyimpan perubahan."
+                data: userProfileData,
+                error: error.message || "Failed to make changes"
             });
         }
     }
