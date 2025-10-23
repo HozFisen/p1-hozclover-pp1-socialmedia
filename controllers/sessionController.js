@@ -46,24 +46,31 @@ class SessionController {
     }
     static async getRegister(req, res) {
         try {
-            res.render('register')
+            res.render('register', { errors: null });
         } catch (error) {
-            res.send(error)
+            res.send(error);
         }
     }
     static async postRegister(req, res) {
         try {
             const { email, username, password } = req.body;
+
             await User.create({
                 email,
                 password,
                 username,
                 role: 'user'
-            })
-            res.redirect('/login')
+            });
+
+            res.redirect('/login');
         } catch (error) {
-            console.log(error)
-            res.send(error)
+            if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+                const errorMessages = error.errors.map(err => err.message);
+                res.status(400).render('register', { errors: errorMessages });
+            } else {
+                console.log(error);
+                res.status(500).send(error);
+            }
         }
     }
     static async getLogin(req, res) {

@@ -18,8 +18,8 @@ module.exports = {
       imageUrl: {
         type: Sequelize.STRING
       },
-      date: {
-        type: Sequelize.DATE
+      likes: {
+        type: Sequelize.INTEGER
       },
       CategoryId: {
         type: Sequelize.INTEGER,
@@ -36,7 +36,7 @@ module.exports = {
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
-    },
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

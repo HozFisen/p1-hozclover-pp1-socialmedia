@@ -1,5 +1,4 @@
 'use strict';
-
 // For getting location
 const {
   Model
@@ -11,23 +10,49 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
-      Post.belongsTo(models.User, {foreignKey:'UserId'})
-      Post.hasOne(models.Category, {foreignKey:'CategoryId'})
-      Post.belongsToMany(models.Reaction, {through:models.PostReaction, foreignKey:'PostId'})
-    }
+static associate(models) {
+    Post.belongsTo(models.User, { foreignKey: 'UserId' });
+
+    Post.hasMany(models.PostReaction, { foreignKey: 'PostId' });
+
+    // Many-to-many through PostReaction
+    Post.belongsToMany(models.User, { 
+        through: models.PostReaction, 
+        foreignKey: 'PostId', 
+        otherKey: 'UserId', 
+        as: 'ReactedUsers' 
+    });
+}
     // Getter or static method
-    formatDate() {
-      formatDate = new Date(this.date).toLocaleDateString()
-      return formatDate
+    get formatDate() {
+      format = new Date(this.date).toLocaleDateString()
+      return `${format}`
     }
   }
   Post.init({
-    title: DataTypes.STRING,
-    content: DataTypes.TEXT,
-    imageUrl: DataTypes.STRING,
-    date: DataTypes.DATE,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty:{msg: "Please make a title"},
+        notNull:{msg: "Please make a title"}
+      }
+    },
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: { // Perlu validasi word
+        notEmpty:{msg: "Please fill content"},
+        notNull:{msg: "Please fill content"}
+      }
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+    },
+    likes: {
+      type:DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     CategoryId:DataTypes.INTEGER,
     UserId: DataTypes.INTEGER
   }, {

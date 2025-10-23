@@ -23,6 +23,10 @@ module.exports = {
       role: {
         type: Sequelize.STRING
       },
+      ip: {
+        type: Sequelize.STRING,
+        defaultValue: '8.8.8.8'
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

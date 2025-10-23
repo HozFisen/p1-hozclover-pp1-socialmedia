@@ -4,6 +4,7 @@ const salt = bcrypt.genSaltSync(10)
 
 class postController {
 
+<<<<<<< HEAD
     // Dummy data
     static async posts(req, res) {
         try {
@@ -63,6 +64,8 @@ class postController {
     //         res.send(error)
     //     }
     // }
+=======
+>>>>>>> 3b5632bc467d0a016e7ebbe71cc14f2e8c703758
     static async getPost(req, res) {
         try {
             // Ambil kategori untuk dropdown di form
@@ -156,16 +159,30 @@ class postController {
         }
     }
 
-    static async delete(req, res) {
-        try {
-            const { id } = req.params;
-            await Post.destroy({
-                where: id
-            })
-            res.redirect(`/users/${id}`)
-        } catch (err) {
-            res.send(err);
-        }
+// <<<<<<< HEAD
+//     static async delete(req, res) {
+//         try {
+//             const { id } = req.params;
+//             await Post.destroy({
+//                 where: id
+//             })
+//             res.redirect(`/users/${id}`)
+//         } catch (err) {
+//             res.send(err);
+//         }
+// =======
+    static delete(req, res) {
+    const { id } = req.params;
+    const {userId} = req.query;
+    // Doesn't go back to users/id, sad.
+    Post.destroy({ where: { id } })
+        .then(() => {
+        res.redirect(`/users/${userId}`);
+        })
+        .catch((err) => {
+        console.log(err)
+        res.send(err);
+        });
     }
     static async delete(req, res) {
         try {
