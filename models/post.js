@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       Post.hasOne(models.Category, {foreignKey:'CategoryId'})
       Post.belongsToMany(models.Reaction, {through:models.PostReaction, foreignKey:'PostId'})
     }
-    // Getter 
+    // Getter or static method
     formatDate() {
       formatDate = new Date(this.date).toLocaleDateString()
       return formatDate

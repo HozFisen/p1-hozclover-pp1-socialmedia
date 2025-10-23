@@ -14,7 +14,7 @@ class postController {
                         include: [UserProfile]
                     }
                 ],
-                order: [['createdAt', 'DESC']]
+                order: [['date', 'DESC']]
             });
 
             res.render('home', { posts });

@@ -1,17 +1,18 @@
 const router = require('express').Router();
-const Controller = require('../controllers/controller');
+const SessionController = require('../controllers/sessionController.js');
 const users = require('./users');
 const posts = require('./posts');
+const session = require('express-session');
 
 // LANDINGPAGE
-router.get("/", Controller.posts);
+router.get("/", SessionController.home);
 
 // AUTH
-router.get("/register", Controller.getRegister);
-router.post("/register", Controller.postRegister);
-router.get("/login", Controller.getLogin);
-router.post("/login", Controller.postLogin);
-router.get("/logout", Controller.logout)
+router.get("/register", SessionController.getRegister);
+router.post("/register", SessionController.postRegister);
+router.get("/login", SessionController.getLogin);
+router.post("/login", SessionController.postLogin);
+router.get("/logout", SessionController.logout)
 
 // USERS & POSTS ROUTES
 router.use("/users", users);

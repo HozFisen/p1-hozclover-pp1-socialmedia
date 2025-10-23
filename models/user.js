@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique:{msg: "E-mail has already registered!"},
+      unique:{msg: "Username is already in use!"},
       validate: {
         notEmpty:{msg: "Please make a username"},
         notNull:{msg: "Please make a username"},
