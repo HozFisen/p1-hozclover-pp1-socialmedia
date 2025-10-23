@@ -109,11 +109,19 @@
   <!-- Profile Header -->
   <div class="container">
     <div class="profile-header">
-      <img src="<%= user.profilePicture || '/default-pp.jpg' %>" alt="User Profile Picture">
+      <img 
+        src="<%= user.UserProfile?.profilePicture || '/default-pp.jpg' %>" 
+        alt="User Profile Picture"
+      >
       <div class="username"><%= user.username %></div>
-      <!-- Edit Profile Text -->
-      <a href="/users/<%= user.id %>/edit" class="edit-profile">Edit Profile</a>
-      <div class="tagline"><%= user.tagLine || 'No tagline yet.' %></div>
+
+      <div class="tagline"><%= user.UserProfile?.tagLine || 'No tagline yet.' %></div>
+
+      <% if (user.UserProfile?.isPrivate) { %>
+        <span class="badge bg-secondary">Private Account</span>
+      <% } %>
+
+      <a href="/users/<%= user.id %>/edit" class="edit-profile d-block mt-2">Edit Profile</a>
     </div>
 
     <!-- User Posts -->
@@ -121,7 +129,7 @@
       <% if (user.Posts && user.Posts.length > 0) { %>
         <% user.Posts.forEach(post => { %>
           <div class="post-item">
-            <img src="<%= post.imageUrl %>" alt="Post Image">
+            <img src="<%= post.imageUrl %>" alt="">
             <div class="post-overlay"><%= post.content.substring(0, 40) %>...</div>
           </div>
         <% }) %>
@@ -130,5 +138,6 @@
       <% } %>
     </div>
   </div>
+  <%- include('bottom') %>
 </body>
 </html>

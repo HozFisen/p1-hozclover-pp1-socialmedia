@@ -1,4 +1,6 @@
 'use strict';
+
+// For getting location
 const {
   Model
 } = require('sequelize');
@@ -14,8 +16,11 @@ module.exports = (sequelize, DataTypes) => {
       Post.belongsTo(models.User, {foreignKey:'UserId'})
       Post.hasOne(models.Category, {foreignKey:'CategoryId'})
       Post.belongsToMany(models.Reaction, {through:models.PostReaction, foreignKey:'PostId'})
-
-      
+    }
+    // Getter 
+    get formatDate() {
+      formatDate = new Date(this.date).toISOString().split('T')[0]
+      return formatDate
     }
   }
   Post.init({
