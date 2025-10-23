@@ -19,6 +19,7 @@ class Controller {
 
             res.render('home', { posts });
         } catch (error) {
+            console.log(error)
             res.send(error);
         }
     }
@@ -34,21 +35,27 @@ class Controller {
     static async postRegister(req, res) {
         try {
             const { email, username, password } = req.body;
-            console.log(req.body, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+            // console.log(req.body, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
             await User.create({
                 email,
                 password,
                 username,
-                role: 'User'
+                role: 'user'
             })
             res.redirect('/login')
         } catch (error) {
+            console.log(error)
             res.send(error)
         }
     }
     static async getLogin(req, res) {
         try {
-
+            /*
+            TODO: Display Error jika:
+            Email tidak adak,
+            Email ada, password salah.
+            */
+           
             res.render('login', { error: null }); // default null
         } catch (err) {
             res.send(err);
@@ -57,24 +64,28 @@ class Controller {
 
     static async postLogin(req, res) {
         try {
-            const { username, password } = req.body;
-            let user = await User.findOne({ where: { username } })
+            const { email, password } = req.body;
+            let user = await User.findOne({ where: { email } })
             const isValidPassword = bcrypt.compareSync(password, user.password)
             if (isValidPassword) {
+                // Start session here.
+                req.session.userId = user.id;
+                req.session.username = user.username;
+                req.session.role = user.role;
                 res.redirect("/")
+                console.log(req.session)
             } else {
                 res.redirect("/login")
             }
         } catch (error) {
+            console.log(error)
             res.send(error)
         }
     }
-    static async logout(req,res) {
-        try {
-
-        } catch {
-            
-        }
+    static logout(req,res) {
+        req.session.destroy(() => {
+            res.redirect('/login')
+        });
     }
 
     // ===========USER==========

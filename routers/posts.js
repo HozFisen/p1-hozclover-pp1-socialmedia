@@ -1,10 +1,11 @@
 const router = require('express').Router();
-const Controller = require('../controllers/controller');
+const postController = require('../controllers/postController');
+const {auth} = require('../middleware/authentication')
 
-router.get("/", Controller.posts); 
-router.get("/:id/like", Controller.like); 
-router.get("/add", Controller.getPost); 
-router.post("/add", Controller.postPost); 
-// router.get("/:id", Controller.userProfle); 
+router.get("/", postController.posts); 
+router.get("/:id/like", auth ,postController.like); 
+router.get("/add", auth, postController.getPost); 
+router.post("/add", auth, postController.postPost); 
+// router.get("/:id", postController.userProfle); 
 
 module.exports = router;

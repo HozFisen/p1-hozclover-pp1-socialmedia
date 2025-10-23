@@ -17,7 +17,10 @@ module.exports = (sequelize, DataTypes) => {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     tagLine: DataTypes.STRING(50),
-    isPrivate: DataTypes.BOOLEAN,
+    isPrivate: {
+      type: DataTypes.BOOLEAN,
+      defaultValue:false,
+    },
     profilePicture: DataTypes.STRING,
     UserId: DataTypes.INTEGER,
   }, {
