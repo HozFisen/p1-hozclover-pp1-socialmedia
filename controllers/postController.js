@@ -1,4 +1,4 @@
-const { User, UserProfile, Category, Post } = require('../models/index');
+const { User, PostReaction, Category, Post } = require('../models/index');
 const bcrypt = require('bcryptjs')
 const salt = bcrypt.genSaltSync(10)
 
@@ -39,43 +39,35 @@ class postController {
 
 
     // ==========LOGIC===========
-
-    // static async addReaction(req, res) {
-    //     // Dummy handler untuk tombol reaction
-    //     res.send(`Reaction ${req.body.reaction} added to post ${req.body.postId}`);
-    // };
     static async like(req, res) {
+        const userId = req.session.userId;
+        const postId = Number(req.params.id)
+        console.log(postId, "<<< POST ID")
+        console.log(userId, "<<< USER")
+
         try {
-            const postId = req.params.id;
-            const userId = req.session.userId;
+        // Check if user already reacted
+        const existingReaction = await PostReaction.findOne({
+            where: { UserId: userId, PostId: postId }
+        });
 
-            // Cari reaction "like"
-            const likeReaction = await Reaction.findOne({ where: { name: 'like' } });
+        if (existingReaction) {
+            return res.status(400).json({ message: "You have already reacted to this post." });
+        }
 
-            // Cek apakah user sudah like post ini
-            const existing = await PostReaction.findOne({
-                where: {
-                    UserId: userId,
-                    PostId: postId,
-                    ReactionId: likeReaction.id
-                }
-            });
+        // Create reaction
+        await PostReaction.create({
+            UserId: userId,
+            PostId: postId
+        });
 
-            if (existing) {
-                // sudah like -> unlike
-                await existing.destroy();
-            } else {
-                // belum -> like
-                await PostReaction.create({
-                    userId,
-                    postId,
-                    ReactionId: likeReaction.id
-                });
-            }
+        // Increment likesCount atomically
+        await Post.increment('likes', { by: 1, where: { id: postId } });
 
-            res.redirect('back');
+        res.redirect('/')
         } catch (error) {
-            console.error(error);
+        console.log(error);
+        res.status(500).json({ error: "Something went wrong." });
         }
     }
 
@@ -91,16 +83,6 @@ class postController {
         console.log(err)
         res.send(err);
         });
-    }
-    static async delete(req, res) {
-        try {
-            const {id} = req.params;
-            let data = await Post.findByPk(id);
-            await data.destroy()
-            res.redirect(`/users/${id}`)
-        } catch (err) {
-            res.send(err);
-        }
     }
 }
 

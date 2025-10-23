@@ -213,7 +213,7 @@
           <div class="reaction-bar">
             <form method="POST" action="/posts/<%= post.id %>/like">
               <button type="submit" class="reaction-btn">
-                <i class="bi bi-heart"></i> <span><%= post.likeCount || 0 %></span>
+                <i class="bi bi-heart"></i> <span><%= post.likes || 0 %></span>
               </button>
             </form>
           </div>

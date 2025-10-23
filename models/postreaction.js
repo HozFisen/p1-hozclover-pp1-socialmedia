@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   PostReaction.init({
-    ReactionId: DataTypes.INTEGER,
     PostId: DataTypes.INTEGER,
     UserId: DataTypes.INTEGER
   }, {
