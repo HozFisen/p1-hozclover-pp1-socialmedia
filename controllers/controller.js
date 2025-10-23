@@ -1,13 +1,23 @@
 const { User, UserProfile, Category, Post } = require('../models/index');
+const bcrypt = require('bcryptjs')
+const salt = bcrypt.genSaltSync(10)
 
 class Controller {
 
     // Dummy data
     static async posts(req, res) {
         try {
-            let data = await User.findAll()
-            res.send(data)                        // yang iniiiii
-            // res.render('home', { data });
+            let posts = await Post.findAll({
+                include: [
+                    {
+                        model: User,
+                        include: [UserProfile]
+                    }
+                ],
+                order: [['createdAt', 'DESC']]
+            });
+
+            res.render('home', { posts });
         } catch (error) {
             res.send(error);
         }
@@ -24,6 +34,7 @@ class Controller {
     static async postRegister(req, res) {
         try {
             const { email, username, password } = req.body;
+            console.log(req.body, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
             await User.create({
                 email,
                 password,
@@ -37,6 +48,7 @@ class Controller {
     }
     static async getLogin(req, res) {
         try {
+
             res.render('login', { error: null }); // default null
         } catch (err) {
             res.send(err);
@@ -45,17 +57,35 @@ class Controller {
 
     static async postLogin(req, res) {
         try {
-
+            const { username, password } = req.body;
+            let user = await User.findOne({ where: { username } })
+            const isValidPassword = bcrypt.compareSync(password, user.password)
+            if (isValidPassword) {
+                res.redirect("/")
+            } else {
+                res.redirect("/login")
+            }
         } catch (error) {
             res.send(error)
         }
     }
+    static async logout(req,res) {
+        try {
 
+        } catch {
+            
+        }
+    }
 
     // ===========USER==========
     static async allUsers(req, res) {
         try {
+            const users = await User.findAll({
+                include: UserProfile
+            })
+            // console.log(users.UserProfiles[0].profilePicture, 'sssssssssssssssssaaaaaaaaa');
 
+            res.render('users', { users })
         } catch (error) {
             res.send(error)
         }
@@ -63,10 +93,9 @@ class Controller {
     static async userProfle(req, res) {
         try {
             const { id } = req.params;
-            // const user = await User.findByPk(id, {
-            //     include: Post
-            // });
-            const user = { id: 1, username: "DemoUser", tagLine: "this is tigline", profilePicture: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e" }
+            const user = await User.findByPk(id, {
+                include: [UserProfile, Post] 
+            });
 
             res.render('userProfile', { user });
         } catch (error) {
@@ -91,7 +120,9 @@ class Controller {
     static async getPost(req, res) {
         try {
             // Ambil kategori untuk dropdown di form
-            const categories = await Category.findAll()
+            const categories = await Category.findAll({
+                 attributes: ['id', 'name', 'description', 'createdAt', 'updatedAt']
+            })
             res.render('addPost', { categories })
         } catch (error) {
             res.send(error)
@@ -100,18 +131,20 @@ class Controller {
 
     static async postPost(req, res) {
         try {
-            const { title, content, imageUrl, CategoryId } = req.body
-            const UserId = req.session.userId  // asumsi user login
-
+            const { title, content, imageUrl, date, CategoryId } = req.body;
+            // const UserId = req.session.userId; // dari user login
+            console.log(req.body,'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW');
+            
             await Post.create({
                 title,
                 content,
                 imageUrl,
+                date,
                 CategoryId,
-                UserId,
-                date: new Date()
-            })
-            res.redirect('/')
+                UserId:1 // sementara dulu
+            });
+
+            res.redirect('/');
         } catch (error) {
             res.send(error)
         }
@@ -158,6 +191,7 @@ class Controller {
             console.error(error);
         }
     }
+
 
 }
 

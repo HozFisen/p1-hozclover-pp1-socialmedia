@@ -1,0 +1,42 @@
+[
+  {
+    "firstName": "Liam",
+    "lastName": "Anderson",
+    "tagLine": "Dream big, live free ✨",
+    "isPrivate": false,
+    "UserId": 1,
+    "profilePicture": "https://randomuser.me/api/portraits/men/11.jpg"
+  },
+  {
+    "firstName": "Ava",
+    "lastName": "Mitchell",
+    "tagLine": "Design is intelligence made visible 🎨",
+    "isPrivate": false,
+    "UserId": 2,
+    "profilePicture": "https://randomuser.me/api/portraits/women/21.jpg"
+  },
+  {
+    "firstName": "Noah",
+    "lastName": "Carter",
+    "tagLine": "Code. Create. Conquer. 💻",
+    "isPrivate": false,
+    "UserId": 3,
+    "profilePicture": "https://randomuser.me/api/portraits/men/31.jpg"
+  },
+  {
+    "firstName": "Sophia",
+    "lastName": "Hughes",
+    "tagLine": "Stay curious 🧠",
+    "isPrivate": true,
+    "UserId": 4,
+    "profilePicture": "https://randomuser.me/api/portraits/women/41.jpg"
+  },
+  {
+    "firstName": "Ethan",
+    "lastName": "Wright",
+    "tagLine": "Building the future 🚀",
+    "isPrivate": false,
+    "UserId": 5,
+    "profilePicture": "https://randomuser.me/api/portraits/men/51.jpg"
+  }
+]

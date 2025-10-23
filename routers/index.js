@@ -11,6 +11,7 @@ router.get("/register", Controller.getRegister);
 router.post("/register", Controller.postRegister);
 router.get("/login", Controller.getLogin);
 router.post("/login", Controller.postLogin);
+router.get("/logout", Controller.logout)
 
 // --- USERS & POSTS ROUTES ---
 router.use("/users", users);
