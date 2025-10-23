@@ -4,65 +4,6 @@ const salt = bcrypt.genSaltSync(10)
 
 class postController {
 
-    // Dummy data
-    static async posts(req, res) {
-        try {
-            let posts = await Post.findAll({
-                include: [
-                    {
-                        model: User,
-                        include: [UserProfile]
-                    }
-                ],
-                order: [['createdAt', 'DESC']]
-            });
-
-            res.render('home', { posts });
-        } catch (error) {
-            console.log(error)
-            res.send(error);
-        }
-    }
-    // ===========USER==========
-    static async allUsers(req, res) {
-        try {
-            const users = await User.findAll({
-                include: UserProfile
-            })
-            // console.log(users.UserProfiles[0].profilePicture, 'sssssssssssssssssaaaaaaaaa');
-
-            res.render('users', { users })
-        } catch (error) {
-            res.send(error)
-        }
-    }
-    static async userProfle(req, res) {
-        try {
-            const { id } = req.params;
-            const user = await User.findByPk(id, {
-                include: [UserProfile, Post] 
-            });
-
-            res.render('userProfile', { user });
-        } catch (error) {
-            res.send(error);
-        }
-    }
-
-    // static async getUser(req, res) {
-    //     try {
-
-    //     } catch (error) {
-    //         res.send(error)
-    //     }
-    // }
-    // static async postUser(req, res) {
-    //     try {
-
-    //     } catch (error) {
-    //         res.send(error)
-    //     }
-    // }
     static async getPost(req, res) {
         try {
             // Ambil kategori untuk dropdown di form
@@ -138,7 +79,29 @@ class postController {
         }
     }
 
-
+    static delete(req, res) {
+    const { id } = req.params;
+    const {userId} = req.query;
+    // Doesn't go back to users/id, sad.
+    Post.destroy({ where: { id } })
+        .then(() => {
+        res.redirect(`/users/${userId}`);
+        })
+        .catch((err) => {
+        console.log(err)
+        res.send(err);
+        });
+    }
+    static async delete(req, res) {
+        try {
+            const {id} = req.params;
+            let data = await Post.findByPk(id);
+            await data.destroy()
+            res.redirect(`/users/${id}`)
+        } catch (err) {
+            res.send(err);
+        }
+    }
 }
 
 module.exports = postController;

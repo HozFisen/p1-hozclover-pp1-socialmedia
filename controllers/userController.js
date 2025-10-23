@@ -1,6 +1,7 @@
 const { User, UserProfile, Category, Post } = require('../models/index');
 const bcrypt = require('bcryptjs')
 const salt = bcrypt.genSaltSync(10)
+const getRegion = require('../helpers/helper')
 
 class userController {
     // USER MANAGER
@@ -9,7 +10,6 @@ class userController {
             const users = await User.findAll({
                 include: UserProfile
             })
-            // console.log(users.UserProfiles[0].profilePicture, 'sssssssssssssssssaaaaaaaaa');
 
             res.render('users', { users })
         } catch (error) {
@@ -23,19 +23,23 @@ class userController {
                 include: [UserProfile, Post] 
             });
             const active = req.session
-            res.render('userProfile', { user, active });
+            const region = await getRegion(user.ip)
+            res.render('userProfile', { user, active, region });
         } catch (error) {
+            console.log(error)
             res.send(error);
         }
     }
     static async editProfile(req, res) {
         try {
             const id = req.session.userId
+            // const { id } = req.params; 
             const data = await UserProfile.findOne({where:{UserId:id}})
 
             if (!data) {
                 return res.status(404).send("Error 404 - Profile not found!");
             }
+            
             
             res.render('editProfile', { data, error: null});
 
@@ -46,8 +50,8 @@ class userController {
     }
     
     static async postEditProfile(req, res) {
-        const id = req.session.userId;
         try {
+            const id = req.session.userId;
             console.log("EDIT PROFILE",id)
             const { firstName, lastName, tagLine, isPrivate, profilePicture } = req.body;
 
@@ -68,11 +72,7 @@ class userController {
 
         } catch (error) {
             console.error("Error di postEditProfile:", error);
-            const userProfileData = await User.findByPk(id, { include: [UserProfile] });
-            res.render('editProfile', { 
-                data: userProfileData,
-                error: error.message || "Failed to make changes"
-            });
+            res.render('editProfile')
         }
     }
 }

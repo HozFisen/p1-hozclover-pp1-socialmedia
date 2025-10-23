@@ -15,6 +15,42 @@
     }
     .navbar { background: #000; color: #fff; }
     .navbar-brand { color: #fff !important; font-weight: 600; }
+    
+    /* 🛠️ CSS KUSTOM UNTUK SEARCH CAPSULE 🛠️ */
+    .search-capsule {
+      background-color: transparent; /* Ubah latar belakang menjadi transparan */
+      border: 1px solid #fff; /* Tambahkan border putih 1px */
+      border-radius: 50px; /* Bentuk kapsul */
+      padding: 0 12px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      flex-grow: 1; 
+      max-width: 300px;
+      margin-right: 15px;
+      margin-left: 20px;
+    }
+
+    .search-capsule .form-control {
+      border: none;
+      background-color: transparent;
+      padding-left: 0;
+      font-size: 0.95rem;
+      color: #fff; /* Teks input harus putih agar terlihat di navbar hitam */
+    }
+    .search-capsule .form-control::placeholder {
+        color: #ccc; /* Warna placeholder abu-abu terang */
+        opacity: 0.8;
+    }
+    .search-capsule .form-control:focus {
+      box-shadow: none;
+    }
+    .search-capsule .bi-search {
+      color: #fff; /* Ikon search juga putih */
+      margin-right: 8px;
+    }
+    /* -------------------------------------- */
+
 
     .post-card {
       background: #fff;
@@ -96,21 +132,61 @@
       transform: scale(1.2);
       color: #ffc107;
     }
+    .btn-white-black {
+        color: #000 !important;
+        background-color: #fff !important; 
+        border: 1px solid #fff !important;
+        transition: background-color 0.2s, opacity 0.2s;
+    }
+    .btn-white-black:hover {
+        background-color: #f0f0f0 !important; 
+        color: #000 !important;
+        opacity: 0.9;
+    }
   </style>
 </head>
 <body>
   <!-- Navbar atas -->
-  <nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">ECHOZ</a>
-      <% if (active.userId) { %>
+      
+     <div class="d-flex ms-auto align-items-center">
+    <% if (active.userId) { %>
       <h3>- Welcome <%= active.username %>!</h3>
       <a href="/logout" class="btn btn-outline-light ms-auto">Logout</a>
       <% } else { %>
       <a href="/register" class="btn btn-outline-light ms-auto">Register</a>
       <a href="/login" class="btn btn-outline-light ms-2">Login</a>
       <% } %>
-       
+
+    <!-- Tombol sort/filter kategori -->
+    <div class="dropdown ms-2">
+        <button class="btn btn-sm btn-dark btn-category-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Pilih Kategori">
+            <i class="bi bi-list"></i>
+        </button>
+
+       <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+            <h6 class="dropdown-header">Filter Berdasarkan Kategori</h6>
+            <li><a class="dropdown-item" href="/">Semua Postingan</a></li>
+            <li><hr class="dropdown-divider"></li>
+
+            <% if (categories && categories.length > 0) { %>
+                <% categories.forEach(category => { %>
+                    <li>
+                        <a class="dropdown-item" href="/?category=<%= category.id %>">
+                            <%= category.name %>
+                        </a>
+                    </li>
+                <% }) %>
+            <% } else { %>
+                <li><span class="dropdown-item text-muted">Kategori tidak ditemukan.</span></li>
+            <% } %>
+        </ul>
+    </div>
+</div>
+
+
     </div>
   </nav>
 
@@ -140,10 +216,6 @@
                 <i class="bi bi-heart"></i> <span><%= post.likeCount || 0 %></span>
               </button>
             </form>
-
-            <a href="/posts/<%= post.id %>/comments" class="reaction-btn text-decoration-none">
-              <i class="bi bi-chat"></i> <span><%= post.commentCount || 0 %></span>
-            </a>
           </div>
         </div>
       <% }) %>
@@ -159,5 +231,6 @@
     <a href="/users"><i class="bi bi-people-fill"></i></a>
     <a href="/users/<%= active.userId %>"><i class="bi bi-person-circle"></i></a>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

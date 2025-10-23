@@ -3,24 +3,28 @@
     "email": "admin@example.com",
     "password": "admin123",
     "username": "admin",
-    "role": "admin"
+    "role": "admin",
+    "ip": "8.8.8.8"
   },
   {
     "email": "user1@example.com",
     "password": "userpass1",
     "username": "user_one",
-    "role": "user"
+    "role": "user",
+    "ip": "1.1.1.1"
   },
   {
     "email": "user2@example.com",
     "password": "userpass2",
     "username": "user_two",
-    "role": "user"
+    "role": "user",
+    "ip": "216.58.217.206"
   },
   {
     "email": "poki@example.com",
     "password": "poki123",
     "username": "poki",
-    "role": "user"
+    "role": "user",
+    "ip": "151.101.1.69"
   }
 ]
