@@ -9,7 +9,7 @@ async function authorize(req, res, next) {
         const targetUser = await User.findByPk(targetId);
 
         if (!targetUser) {
-            return res.send('User not found');
+            return res.send('Authorization: User not found');
         }
 
         // ROLE CHECK

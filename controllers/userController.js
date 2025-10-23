@@ -22,8 +22,8 @@ class userController {
             const user = await User.findByPk(id, {
                 include: [UserProfile, Post] 
             });
-
-            res.render('userProfile', { user });
+            const active = req.session
+            res.render('userProfile', { user, active });
         } catch (error) {
             res.send(error);
         }
@@ -31,15 +31,13 @@ class userController {
     static async editProfile(req, res) {
         try {
             
-            const { id } = req.params; 
-            const data = await UserProfile.findByPk(id);
+            const id = req.session.userId; 
+            console.log("ID PROFILE ID PROFILE!",id)
+            const data = await UserProfile.findOne({where:{UserId:id}})
 
             if (!data) {
-                return res.status(404).send("Profil tidak ditemukan.");
+                return res.status(404).send("Error 404 - Profile not found!");
             }
-
-           
-            console.log(data,'TTTTTTTTTTTTTTTTTTTTTTTTTTTT');
             
             res.render('editProfile', { 
                 data,
@@ -47,14 +45,14 @@ class userController {
             });
 
         } catch (error) {
-            console.error("Error di getEditProfile:", error);
+            console.error("Unnown Error in editProfile", error);
             res.send(error);
         }
     }
     
     static async postEditProfile(req, res) {
         try {
-            const { id } = req.params;
+            const { id } = req.session.userId;
             const { firstName, lastName, tagLine, isPrivate } = req.body;
 
             const updatedProfileData = {
@@ -77,7 +75,7 @@ class userController {
             res.redirect(`/users/${id}`); 
 
         } catch (error) {
-            console.error("Error di putEditProfile:", error);
+            console.error("Error di postEditProfile:", error);
             // Jika ada error (misalnya validasi), render ulang form dengan pesan error
             const userProfileData = await User.findByPk(id, { include: [UserProfile] });
             res.render('editProfile', { 
