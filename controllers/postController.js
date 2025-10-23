@@ -1,4 +1,4 @@
-const { User, UserProfile, Category, Post, PostReaction } = require('../models/index');
+const { User, PostReaction, Category, Post } = require('../models/index');
 const bcrypt = require('bcryptjs')
 const salt = bcrypt.genSaltSync(10)
 
@@ -99,69 +99,52 @@ class postController {
 
 
     // ==========LOGIC===========
-
-    // static async addReaction(req, res) {
-    //     // Dummy handler untuk tombol reaction
-    //     res.send(`Reaction ${req.body.reaction} added to post ${req.body.postId}`);
-    // };
-
-
-    // Hitung total point like
     static async like(req, res) {
         const userId = req.session.userId;
-        const postId = req.params.postId;
+        const postId = Number(req.params.id)
+        console.log(postId, "<<< POST ID")
+        console.log(userId, "<<< USER")
 
         try {
-            // Check if user already reacted
-            const existingReaction = await PostReaction.findOne({
-                where: { UserId: userId, PostId: postId }
-            });
+        // Check if user already reacted
+        const existingReaction = await PostReaction.findOne({
+            where: { UserId: userId, PostId: postId }
+        });
 
-            if (existingReaction) {
-                return res.status(400).json({ message: "You have already reacted to this post." });
-            }
+        if (existingReaction) {
+            return res.status(400).json({ message: "You have already reacted to this post." });
+        }
 
-            // Create reaction
-            await PostReaction.create({
-                UserId: userId,
-                PostId: postId
-            });
+        // Create reaction
+        await PostReaction.create({
+            UserId: userId,
+            PostId: postId
+        });
 
-            // Increment likesCount atomically
-            await Post.increment('likes', { by: 1, where: { id: postId } });
+        // Increment likesCount atomically
+        await Post.increment('likes', { by: 1, where: { id: postId } });
 
-            res.json({ message: "Reaction added successfully!" });
+        res.redirect('/')
         } catch (error) {
-            console.log(error);
-            res.status(500).json({ error: "Something went wrong." });
+        console.log(error);
+        res.status(500).json({ error: "Something went wrong." });
         }
     }
 
 
     static delete(req, res) {
-        const { id } = req.params;
-        const { userId } = req.query;
-        // Doesn't go back to users/id, sad.
-        Post.destroy({ where: { id } })
-            .then(() => {
-                res.redirect(`/users/${userId}`);
-            })
-            .catch((err) => {
-                console.log(err)
-                res.send(err);
-            });
+    const { id } = req.params;
+    const {userId} = req.query;
+    // Doesn't go back to users/id, sad.
+    Post.destroy({ where: { id } })
+        .then(() => {
+        res.redirect(`/users/${userId}`);
+        })
+        .catch((err) => {
+        console.log(err)
+        res.send(err);
+        });
     }
-    // static async delete(req, res) {
-    //     try {
-    //         const { id } = req.params;
-    //         const { userId } = req.query;
-    //         let data = await Post.findByPk(id);
-    //         await data.destroy()
-    //         res.redirect(`/users/${userId}`)
-    //     } catch (err) {
-    //         res.send(err);
-    //     }
-    // }
 }
 
 module.exports = postController;
