@@ -152,7 +152,7 @@
         <div class="post-overlay"><%= post.content.substring(0, 40) %>...</div>
 
        <% if (active.userId === user.id || active.role === 'admin') { %>
-        <form action="/posts/<%= post.id %>/delete" method="POST" class="delete-btn">
+        <form action="/posts/<%= post.id %>/delete?userId=<%= user.id %>" method="POST" class="delete-btn">
         <button type="submit" class="btn btn-dark">Delete</button>
         </form>
     <% } %>

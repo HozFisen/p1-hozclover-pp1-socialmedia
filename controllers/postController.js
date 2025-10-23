@@ -79,16 +79,18 @@ class postController {
         }
     }
 
-    static async delete(req, res) {
-        try {
-            const {id} = req.params;
-            await Post.destroy({
-                where:id
-            })
-            res.redirect(`/users/${id}`)
-        } catch (err) {
-            res.send(err);
-        }
+    static delete(req, res) {
+    const { id } = req.params;
+    const {userId} = req.query;
+    // Doesn't go back to users/id, sad.
+    Post.destroy({ where: { id } })
+        .then(() => {
+        res.redirect(`/users/${userId}`);
+        })
+        .catch((err) => {
+        console.log(err)
+        res.send(err);
+        });
     }
     static async delete(req, res) {
         try {

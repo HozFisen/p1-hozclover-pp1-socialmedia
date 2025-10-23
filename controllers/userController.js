@@ -10,7 +10,6 @@ class userController {
             const users = await User.findAll({
                 include: UserProfile
             })
-            // console.log(users.UserProfiles[0].profilePicture, 'sssssssssssssssssaaaaaaaaa');
 
             res.render('users', { users })
         } catch (error) {
@@ -40,7 +39,6 @@ class userController {
             if (!data) {
                 return res.status(404).send("Error 404 - Profile not found!");
             }
-            console.log(data,'000000000000000000000000000000000');
             
             
             res.render('editProfile', { data, error: null});
