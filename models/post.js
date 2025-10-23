@@ -19,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     }
     // Getter or static method
     formatDate() {
-      formatDate = new Date(this.date).toLocaleDateString()
-      return formatDate
+      format = new Date(this.date).toLocaleDateString()
+      return `${format}`
     }
   }
   Post.init({
@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.TEXT,
     imageUrl: DataTypes.STRING,
     date: DataTypes.DATE,
+    ip: DataTypes.STRING,
     CategoryId:DataTypes.INTEGER,
     UserId: DataTypes.INTEGER
   }, {
