@@ -20,11 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING(50),
       allowNull: false,
-      unique:true,
+      unique:{msg: "E-mail has already registered!"},
       validate: {
         notEmpty:{msg: "Please insert your email."},
         notNull:{msg: "Please insert your email."},
-        unique:{msg: "E-mail has already registered!"}
       }
     },
     password: {
@@ -38,11 +37,10 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique:true,
+      unique:{msg: "E-mail has already registered!"},
       validate: {
         notEmpty:{msg: "Please make a username"},
         notNull:{msg: "Please make a username"},
-        unique:{msg: "Username is already Taken!"}
       }
     },
     role: { // Harus default ke user.
@@ -51,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     hooks: {
       // Encrypts password before storing
-      beforeCreate() {
+      beforeCreate(instance) {
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(instance.password, salt);
         instance.password = hash

@@ -13,22 +13,31 @@ app.use(express.static('public')); // folder untuk gambar/css/js
 
 // Session setup (nanti bisa disambungkan ke sistem login)
 app.use(session({
-  secret: 'rahasia-echoz',
+  secret: 'secret-echoz',
   resave: false,
   saveUninitialized: false
 }));
 
-// Simulasi user login sementara (sementara aja, biar tampil di UI)
+
 app.use((req, res, next) => {
-  res.locals.user = {
-    username: "DemoUser",
-    profilePicture: "/images/default-avatar.png"
-  };
+  res.locals.user = req.session.username ? {
+    username: req.session.username,
+    role: req.session.role
+  } : null;
   next();
 });
 
+// Simulasi user login sementara (sementara aja, biar tampil di UI)
+// app.use((req, res, next) => {
+//   res.locals.user = {
+//     username: "DemoUser",
+//     profilePicture: "/images/default-avatar.png"
+//   };
+//   next();
+// });
+
 // Routes
-app.use('/', router);
+app.use('/', router); // Index Router
 
 // Jalankan server
 app.listen(port, () => {
