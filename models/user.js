@@ -10,47 +10,48 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      User.hasOne(models.UserProfile, { foreignKey: "UserId" })
-      User.hasMany(models.Post, { foreignKey: 'UserId' })
+      User.hasOne(models.UserProfile, {foreignKey:"UserId"})
+      User.hasMany(models.Post, {foreignKey:'UserId'})
     }
   }
   User.init({
     email: {
       type: DataTypes.STRING(50),
       allowNull: false,
-      unique: {
-        name: 'email',
-        msg: "E-mail has already registered!" // optional untuk kustom pesan
-      },
+      unique:true,
       validate: {
-        notEmpty: { msg: "Please insert your email." },
-        notNull: { msg: "Please insert your email." },
+        notEmpty:{msg: "Please insert your email."},
+        notNull:{msg: "Please insert your email."},
+        unique:{msg: "E-mail has already registered!"}
       }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: { msg: "Please make a password" },
-        notNull: { msg: "Please make a password" }
+        notEmpty:{msg: "Please make a password"},
+        notNull:{msg: "Please make a password"}
       }
     },
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: {
-        unique: { msg: "Username is already Taken!" }
-      },
+      unique:true,
       validate: {
-        notEmpty: { msg: "Please make a username" },
-        notNull: { msg: "Please make a username" },
-        
+        notEmpty:{msg: "Please make a username"},
+        notNull:{msg: "Please make a username"},
+        unique:{msg: "Username is already Taken!"}
       }
     },
     role: { // Harus default ke user.
       type: DataTypes.STRING,
     },
   }, {
+    hooks: {
+      beforeCreate () {
+        
+      },
+    },
     sequelize,
     modelName: 'User',
   });

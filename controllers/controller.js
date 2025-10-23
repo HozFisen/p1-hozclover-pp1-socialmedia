@@ -5,34 +5,15 @@ class Controller {
     // Dummy data
     static async posts(req, res) {
         try {
-            // Dummy posts
-            const posts = [
-                {
-                    id: 1,
-                    content: "Exploring the minimalistic aesthetic.",
-                    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1rLfN_jECvKqzj_8ZVN2U3kr56zYgtYKrYmKtYE_iwvPveb4OpABmrSLpYb8DW9_-DVM&usqp=CAU",
-                    User: { id: 1, username: "DemoUser", profilePicture: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e" },
-                    Reactions: ["Like", "Love", "Haha"],
-                    createdAt: new Date()
-                },
-                {
-                    id: 2,
-                    content: "Black & White vibes.",
-                    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlrQ4DIvctyQR66bcpmR8TywBjJvLh1lKoCw&s",
-                    User: { id: 2, username: "AnotherUser", profilePicture: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e" },
-                    Reactions: ["Like", "Sad"],
-                    createdAt: new Date()
-                }
-            ];
-
-            res.render('home', { posts });
+            let data = await User.findAll()
+            res.send(data)                        // yang iniiiii
+            // res.render('home', { data });
         } catch (error) {
             res.send(error);
         }
     }
 
     // ==========AUTH============
-
     static async getRegister(req, res) {
         try {
             res.render('register')
