@@ -1,6 +1,6 @@
 const { User } = require('../models');
 
-async function authorized(req, res, next) {
+async function authorize(req, res, next) {
     try {
         const targetId = req.params.id;
         const viewerId = req.session.userId;
@@ -9,7 +9,7 @@ async function authorized(req, res, next) {
         const targetUser = await User.findByPk(targetId);
 
         if (!targetUser) {
-            return res.send('User not found');
+            return res.send('Authorization: User not found');
         }
 
         // ROLE CHECK
@@ -27,4 +27,4 @@ async function authorized(req, res, next) {
     }
 }
 
-module.exports = { authorized };
+module.exports = { authorize };

@@ -120,7 +120,7 @@
       <% if (user.UserProfile?.isPrivate) { %>
         <span class="badge bg-secondary">Private Account</span>
       <% } %>
-      <% if (loggedInUserId && loggedInUserId == user.id) { %>
+      <% if (active.userId === user.id || active.role === 'admin') { %>
             <a href="/users/<%= user.id %>/edit" class="edit-profile d-block mt-2">Edit Profile</a>
             <a href="/posts/add" class="btn btn-dark mt-3">Add Post</a>
       <% } %>

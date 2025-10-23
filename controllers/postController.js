@@ -68,7 +68,7 @@ class postController {
             // Ambil kategori untuk dropdown di form
             const categories = await Category.findAll({
                  attributes: ['id', 'name', 'description', 'createdAt', 'updatedAt']
-            })
+            }) // bisa di trim attributes... mungkin?
             res.render('addPost', { categories })
         } catch (error) {
             res.send(error)
@@ -78,8 +78,8 @@ class postController {
     static async postPost(req, res) {
         try {
             const { title, content, imageUrl, date, CategoryId } = req.body;
-            // const UserId = req.session.userId; // dari user login
-            console.log(req.body,'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW');
+            const UserId = req.session.userId; // dari user login
+            // console.log(req.body,'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW');
             
             await Post.create({
                 title,
@@ -87,7 +87,7 @@ class postController {
                 imageUrl,
                 date,
                 CategoryId,
-                UserId:1 // sementara dulu
+                UserId // sementara dulu
             });
 
             res.redirect('/');
@@ -126,8 +126,8 @@ class postController {
             } else {
                 // belum -> like
                 await PostReaction.create({
-                    UserId: userId,
-                    PostId: postId,
+                    userId,
+                    postId,
                     ReactionId: likeReaction.id
                 });
             }

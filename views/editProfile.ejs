@@ -37,9 +37,8 @@
                     <h2 class="card-title text-center mb-4">Edit Profil Pengguna</h2>
 
                     <!-- Form Edit Profile -->
-                    <form action="/users/<%= data.id %>/edit" method="POST">
-                        <input type="hidden" name="userId" value="<%= data.userId %>">
-
+                    <form action="/users/<%= data.UserId %>/edit" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="UserId" value="<%= data.UserId %>">
                         <!-- Foto Profil -->
                         <div class="mb-4">
                             <label class="form-label fw-bold">Foto Profil</label>

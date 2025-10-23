@@ -100,6 +100,7 @@ class Controller {
             Email tidak adak,
             Email ada, password salah.
             */
+           
             res.render('login', { error: null }); // default null
         } catch (err) {
              console.log(error,' HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
@@ -118,6 +119,7 @@ class Controller {
                 req.session.username = user.username;
                 req.session.role = user.role;
                 res.redirect("/")
+                console.log(req.session)
             } else {
                 res.redirect("/login")
             }
