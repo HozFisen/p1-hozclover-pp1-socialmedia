@@ -43,10 +43,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue:'user'
     },
+    ip: {
+      type:DataTypes.STRING,
+      defaultValue:"8.8.8.8"
+    },
   }, {
     hooks: {
       // Encrypts password before storing
       beforeCreate(instance) {
+        if (!instance.ip) {instance.ip = "8.8.8.8"}
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(instance.password, salt);
         instance.password = hash

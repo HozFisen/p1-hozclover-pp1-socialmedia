@@ -117,6 +117,8 @@
 
       <div class="tagline"><%= user.UserProfile?.tagLine || 'No tagline yet.' %></div>
 
+      <div>Location: <%= region %></div>
+
       <% if (user.UserProfile?.isPrivate) { %>
         <span class="badge bg-secondary">Private Account</span>
       <% } %>

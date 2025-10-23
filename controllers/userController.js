@@ -1,6 +1,7 @@
 const { User, UserProfile, Category, Post } = require('../models/index');
 const bcrypt = require('bcryptjs')
 const salt = bcrypt.genSaltSync(10)
+const getRegion = require('../helpers/helper')
 
 class userController {
     // USER MANAGER
@@ -23,8 +24,10 @@ class userController {
                 include: [UserProfile, Post] 
             });
             const active = req.session
-            res.render('userProfile', { user, active });
+            const region = await getRegion(user.ip)
+            res.render('userProfile', { user, active, region });
         } catch (error) {
+            console.log(error)
             res.send(error);
         }
     }

@@ -1,5 +1,4 @@
 'use strict';
-
 // For getting location
 const {
   Model
@@ -18,17 +17,35 @@ module.exports = (sequelize, DataTypes) => {
       Post.belongsToMany(models.Reaction, {through:models.PostReaction, foreignKey:'PostId'})
     }
     // Getter or static method
-    formatDate() {
+    get formatDate() {
       format = new Date(this.date).toLocaleDateString()
       return `${format}`
     }
   }
   Post.init({
-    title: DataTypes.STRING,
-    content: DataTypes.TEXT,
-    imageUrl: DataTypes.STRING,
-    date: DataTypes.DATE,
-    ip: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty:{msg: "Please make a title"},
+        notNull:{msg: "Please make a title"}
+      }
+    },
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: { // Perlu validasi word
+        notEmpty:{msg: "Please fill content"},
+        notNull:{msg: "Please fill content"}
+      }
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+    },
+    date: {
+      type:DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
     CategoryId:DataTypes.INTEGER,
     UserId: DataTypes.INTEGER
   }, {

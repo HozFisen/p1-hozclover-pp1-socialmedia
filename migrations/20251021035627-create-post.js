@@ -37,10 +37,6 @@ module.exports = {
       onUpdate: 'cascade',
       onDelete: 'cascade'
       },
-      ip: {
-        type: Sequelize.STRING,
-        defaultValue: '8.8.8.8'
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
