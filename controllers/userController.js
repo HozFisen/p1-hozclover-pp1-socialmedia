@@ -34,6 +34,8 @@ class userController {
         try {
             const id = req.session.userId
             // const { id } = req.params; 
+            console.log(id, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+            
             const data = await UserProfile.findOne({where:{UserId:id}})
 
             if (!data) {
@@ -49,32 +51,56 @@ class userController {
         }
     }
     
-    static async postEditProfile(req, res) {
-        try {
-            const id = req.session.userId;
-            console.log("EDIT PROFILE",id)
-            const { firstName, lastName, tagLine, isPrivate, profilePicture } = req.body;
+   // userController.js
 
-            const updatedProfileData = {
-                firstName,
-                lastName,
-                profilePicture,
-                tagLine,
-                isPrivate: isPrivate === 'on' ? true : false 
-            };
-            
-            await UserProfile.update(updatedProfileData, {
-                where: { UserId: id }
-            });
+static async postEditProfile(req, res) {
+    try {
+        // Ambil ID dari URL params (ini adalah ID pengguna yang profilnya diedit)
+        const { id } = req.params; 
+        const { firstName, lastName, tagLine, isPrivate ,profilePicture} = req.body;
 
+        // 1. Siapkan data yang akan diupdate
+        const updatedProfileData = {
+            firstName,
+            lastName,
+            tagLine,
+            // Konversi 'on'/'off' dari checkbox menjadi boolean
+            isPrivate: isPrivate === 'on' ? true : false, 
+            // UserId tidak perlu diupdate, tapi pastikan ada jika diperlukan
+            profilePicture
+        };
 
-            res.redirect(`/users/${id}`); 
+        // 2. LAKUKAN UPDATE, TERMASUK OPSI { WHERE: ... } 🛠️
+        await UserProfile.update(updatedProfileData, {
+            // KRUSIAL: Memberi tahu Sequelize baris mana yang harus diupdate
+            where: { 
+                UserId: id 
+            }
+        });
 
-        } catch (error) {
-            console.error("Error di postEditProfile:", error);
-            res.render('editProfile')
+        // Jika update berhasil
+        res.redirect(`/users/${id}`); 
+
+    } catch (error) {
+        // ... (blok catch yang menangani render ulang form saat error)
+        console.error("Error in postEditProfile:", error);
+
+        // Ambil data profil lama
+        const profileData = await UserProfile.findOne({ where: { UserId: req.params.id } });
+        
+        // Mengirim error validation Sequelize ke EJS (jika ada)
+        let errorMessage = "Gagal menyimpan perubahan.";
+        if (error.errors && error.errors.length > 0) {
+             errorMessage = error.errors[0].message; 
         }
+
+        res.render('editProfile', { 
+            data: profileData,
+            error: errorMessage,
+            input: req.body // Kirim ulang input yang gagal
+        });
     }
+}
 }
 
 module.exports = userController;

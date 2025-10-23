@@ -37,23 +37,22 @@
                     <h2 class="card-title text-center mb-4">Edit Profil Pengguna</h2>
 
                     <!-- Form Edit Profile -->
-                    <form action="/users/<%= data.UserId %>/edit" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="UserId" value="<%= data.UserId %>">
+                    <form action="/users/<%= data.UserId %>/edit" method="POST">
                         <!-- Foto Profil -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold">Foto Profil (URL)</label>
-                            <div class="profile-pic-container">
-                                <img id="previewProfilePic"
-                                     src="<%= data.profilePicture || '/images/default-profile.png' %>" 
-                                     alt="Foto Profil Saat Ini" class="me-4">
-                                <div>
-                                    <input class="form-control" type="url" id="profilePicture" name="profilePicture" 
-                                           placeholder="Masukkan URL gambar..." value="<%= data.profilePicture || '' %>">
-                                    <small class="form-text text-muted">Masukkan URL gambar yang valid.</small>
-                                </div>
-                            </div>
+                           <label class="form-label fw-bold"></label>
+                           <div class="profile-pic-container">
+                               <img id="previewProfilePic"
+                                    src="<%= data.profilePicture || '/images/default-profile.png' %>" 
+                                    alt="" class="me-4">
+                               <div>
+                                   <input class="form-control" type="url" id="profilePicture" name="profilePicture" 
+                                          placeholder="Masukkan URL gambar..." value="<%= data.profilePicture || '' %>">
+                                   <small class="form-text text-muted">Masukkan URL gambar yang valid.</small>
+                               </div>
+                           </div>
+                       </div>
                         </div>
-
 
                         <!-- Nama Depan -->
                         <div class="mb-3">
