@@ -166,61 +166,121 @@ class Controller {
     // };
 
 
-    static async editProfile(req, res) {
-        try {
+    // static async formProfile(req, res) {
+    //     try {
             
-            const { id } = req.params; 
-            const data = await UserProfile.findByPk(id);
+    //         const { id } = req.params; 
+    //         const data = await UserProfile.findByPk(id);
 
-            if (!data) {
-                return res.status(404).send("Profil tidak ditemukan.");
-            }
+    //         if (!data) {
+    //             return res.status(404).send("Profil tidak ditemukan.");
+    //         }
 
            
-            console.log(data,'TTTTTTTTTTTTTTTTTTTTTTTTTTTT');
+    //         console.log(data,'TTTTTTTTTTTTTTTTTTTTTTTTTTTT');
             
+    //         res.render('editProfile', { 
+    //             data,
+    //             error: null
+    //         });
+
+    //     } catch (error) {
+    //         console.error("Error di getEditProfile:", error);
+    //         res.send(error);
+    //     }
+    // }
+    
+    // static async editProfile(req, res) {
+    //     try {
+    //         const { id } = req.params;
+    //         const { firstName, lastName, tagLine, isPrivate, profilePicture} = req.body;
+    //         console.log(req.body,'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG');
+
+    //         const updatedProfileData = {
+    //             firstName: firstName,
+    //             lastName: lastName,
+    //             tagLine: tagLine,
+    //             isPrivate: isPrivate === 'on' ? true : false,
+    //             UserId: id,
+    //             profilePicture
+    //         };
+            
+    //         await UserProfile.update(updatedProfileData, {
+    //             where: { UserId: id }
+    //         });
+
+    //         // Note: Jika kolom UserProfile memiliki 'UserId' sebagai Foreign Key ke User,
+    //         // Anda mungkin perlu memastikan ID dimasukkan:
+    //         /* await UserProfile.upsert({ ...updatedProfileData, UserId: id }); 
+    //         */
+
+
+    //         res.redirect(`/users/${id}`); 
+
+    //     } catch (error) {
+    //         console.error("Error di putEditProfile:", error);
+    //         // Jika ada error (misalnya validasi), render ulang form dengan pesan error
+    //         const userProfileData = await User.findByPk(id, { include: [UserProfile] });
+    //         res.render('editProfile', { 
+    //             userProfile: userProfileData,
+    //             error: error.message || "Gagal menyimpan perubahan."
+    //         });
+    //     }
+    // }
+
+    static async formProfile(req, res) {
+        try {
+            const { id } = req.params; 
+            const data = await UserProfile.findOne({ where: { UserId: id } });
+
+            if (!data) {
+                return res.status(404).send("Profile not found.");
+            }
+
             res.render('editProfile', { 
-                data,
+                data,    // data profile lengkap
                 error: null
             });
 
         } catch (error) {
-            console.error("Error di getEditProfile:", error);
+            console.error("Error in formProfile:", error);
             res.send(error);
         }
     }
-    
-    static async putEditProfile(req, res) {
+
+    // POST: Submit edit profile
+    static async editProfile(req, res) {
         try {
             const { id } = req.params;
             const { firstName, lastName, tagLine, isPrivate } = req.body;
 
+            // Jika menggunakan upload file (foto), req.file akan tersedia via multer
+            // Contoh: profilePicture: req.file?.filename
+            let profilePicture = req.file ? `/uploads/${req.file.filename}` : undefined;
+
             const updatedProfileData = {
-                firstName: firstName,
-                lastName: lastName,
-                tagLine: tagLine,
-                isPrivate: isPrivate === 'on' ? true : false 
+                firstName,
+                lastName,
+                tagLine,
+                isPrivate: isPrivate === 'on' ? true : false
             };
-            
+
+            if (profilePicture) updatedProfileData.profilePicture = profilePicture;
+
             await UserProfile.update(updatedProfileData, {
                 where: { UserId: id }
             });
 
-            // Note: Jika kolom UserProfile memiliki 'UserId' sebagai Foreign Key ke User,
-            // Anda mungkin perlu memastikan ID dimasukkan:
-            /* await UserProfile.upsert({ ...updatedProfileData, UserId: id }); 
-            */
-
-
-            res.redirect(`/users/${id}`); 
+            res.redirect(`/users/${id}`); // balik ke halaman profile
 
         } catch (error) {
-            console.error("Error di putEditProfile:", error);
-            // Jika ada error (misalnya validasi), render ulang form dengan pesan error
-            const userProfileData = await User.findByPk(id, { include: [UserProfile] });
+            console.error("Error in editProfile:", error);
+
+            // Render ulang form dengan pesan error dan data lama
+            const data = await UserProfile.findOne({ where: { UserId: req.params.id } });
             res.render('editProfile', { 
-                userProfile: userProfileData,
-                error: error.message || "Gagal menyimpan perubahan."
+                data,
+                error: error.message || "Failed to save changes."
             });
         }
     }
