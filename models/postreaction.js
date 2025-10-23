@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
     PostReaction.belongsTo(models.Post, { foreignKey: 'PostId' });
-    PostReaction.belongsTo(models.Reaction, { foreignKey: 'ReactionId' });
     PostReaction.belongsTo(models.User, {foreignKey: "UserId"})
     }
   }

@@ -10,12 +10,19 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
-      Post.belongsTo(models.User, {foreignKey:'UserId'})
-      Post.hasOne(models.Category, {foreignKey:'CategoryId'})
-      Post.belongsToMany(models.Reaction, {through:models.PostReaction, foreignKey:'PostId'})
-    }
+static associate(models) {
+    Post.belongsTo(models.User, { foreignKey: 'UserId' });
+
+    Post.hasMany(models.PostReaction, { foreignKey: 'PostId' });
+
+    // Many-to-many through PostReaction
+    Post.belongsToMany(models.User, { 
+        through: models.PostReaction, 
+        foreignKey: 'PostId', 
+        otherKey: 'UserId', 
+        as: 'ReactedUsers' 
+    });
+}
     // Getter or static method
     get formatDate() {
       format = new Date(this.date).toLocaleDateString()
@@ -42,9 +49,9 @@ module.exports = (sequelize, DataTypes) => {
     imageUrl: {
       type: DataTypes.STRING,
     },
-    date: {
-      type:DataTypes.DATE,
-      defaultValue: DataTypes.NOW
+    likes: {
+      type:DataTypes.INTEGER,
+      defaultValue: 0,
     },
     CategoryId:DataTypes.INTEGER,
     UserId: DataTypes.INTEGER

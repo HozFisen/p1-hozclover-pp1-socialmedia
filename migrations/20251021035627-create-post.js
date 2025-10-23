@@ -18,8 +18,8 @@ module.exports = {
       imageUrl: {
         type: Sequelize.STRING
       },
-      date: {
-        type: Sequelize.DATE
+      likes: {
+        type: Sequelize.INTEGER
       },
       CategoryId: {
         type: Sequelize.INTEGER,

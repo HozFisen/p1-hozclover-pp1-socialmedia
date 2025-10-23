@@ -4,10 +4,18 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    static associate(models) {
-      User.hasOne(models.UserProfile, { foreignKey: "UserId" });
-      User.hasMany(models.Post, { foreignKey: 'UserId' });
-    }
+static associate(models) {
+    User.hasOne(models.UserProfile, { foreignKey: "UserId" });
+    User.hasMany(models.Post, { foreignKey: 'UserId' });
+
+    // Many-to-many through PostReaction
+    User.belongsToMany(models.Post, { 
+        through: models.PostReaction, 
+        foreignKey: 'UserId', 
+        otherKey: 'PostId', 
+        as: 'ReactedPosts' 
+    });
+}
   }
 
   User.init({

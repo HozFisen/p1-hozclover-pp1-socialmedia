@@ -4,8 +4,8 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     let data = JSON.parse(await fs.readFile("./data/post.json", "utf8")).map((el) => {
       delete el.id;
-
-      el.date = el.createdAt = el.updatedAt = new Date();
+      el.likes = 0
+      el.createdAt = el.updatedAt = new Date();
       return el;
     });
 

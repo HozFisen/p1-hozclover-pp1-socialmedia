@@ -9,16 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ReactionId: {
-      type: Sequelize.INTEGER,
-      references: {
-        allowNull:false,
-        model: 'Reactions',
-        key: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },
       PostId: {
         allowNull:false,
       type: Sequelize.INTEGER,
