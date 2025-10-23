@@ -16,7 +16,7 @@ class userController {
             res.send(error)
         }
     }
-    static async userProfle(req, res) {
+    static async userProfile(req, res) {
         try {
             const { id } = req.params;
             const user = await User.findByPk(id, {

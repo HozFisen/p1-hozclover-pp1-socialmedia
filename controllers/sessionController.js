@@ -15,8 +15,8 @@ class SessionController {
                 ],
                 order: [['createdAt', 'DESC']]
             });
-            const user = req.session
-            res.render('home', { posts , user });
+            const active = req.session
+            res.render('home', { posts , active });
         } catch (error) {
             console.log(error)
             res.send(error);
