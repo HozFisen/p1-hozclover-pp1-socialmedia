@@ -110,7 +110,7 @@
   <div class="container">
     <div class="profile-header">
       <img 
-        src="<%= user.UserProfile?.profilePicture || '/default-pp.jpg' %>" 
+        src="<%= user.UserProfile?.profilePicture || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlR_n4KeBSnrxA8Fl8xOiWLWxhvH0X6bKp8A&s' %>" 
         alt="User Profile Picture"
       >
       <div class="username"><%= user.username %></div>
@@ -122,6 +122,7 @@
       <% } %>
       <% if (loggedInUserId && loggedInUserId == user.id) { %>
             <a href="/users/<%= user.id %>/edit" class="edit-profile d-block mt-2">Edit Profile</a>
+            <a href="/posts/add" class="btn btn-dark mt-3">Add Post</a>
       <% } %>
        </div>
       

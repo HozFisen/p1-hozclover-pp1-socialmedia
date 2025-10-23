@@ -1,28 +1,73 @@
 const { User, UserProfile, Category, Post } = require('../models/index');
 const bcrypt = require('bcryptjs')
+const {Op, where} = require('sequelize')
 const salt = bcrypt.genSaltSync(10)
 
 class Controller {
 
     // Dummy data
-    static async posts(req, res) {
-        try {
-            let posts = await Post.findAll({
-                include: [
-                    {
-                        model: User,
-                        include: [UserProfile]
-                    }
-                ],
-                order: [['createdAt', 'DESC']]
-            });
+   static async posts(req, res) {
+    try {
+        // const { search, category } = req.query;
 
-            res.render('home', { posts });
-        } catch (error) {
-            console.log(error)
-            res.send(error);
+        // let whereCondition = {};
+        // if(search) whereCondition.title = { [Op.like]: `%${search}%` };
+        // if(category) whereCondition.CategoryId = category;
+
+        // const posts = await Post.findAll({
+        //     where: whereCondition,
+        //     include: [
+        //         {
+        //             model: User,
+        //             include: [UserProfile]
+        //         }
+        //     ],
+        //     order: [['createdAt', 'DESC']]
+        // });
+
+        // const categories = await Category.findAll(); // Supaya bisa render dropdown
+
+        // res.render('home', { posts, categories, query: search || '' });
+
+
+        const { category } = req.query; // Akan menjadi string (misal: '1') atau undefined
+        
+        let filterOptions = {
+            order: [['createdAt', 'DESC']],
+            include: [
+                {
+                    model: User,
+                    include: [UserProfile]
+                }
+            ]
+        };
+
+        // 2. Tambahkan kondisi WHERE jika kategori dipilih
+        if (category) {
+            // Pastikan CategoryId adalah angka (jika disimpan sebagai integer di DB)
+            filterOptions.where = {
+                CategoryId: +category // Mengubah string menjadi integer
+            };
         }
+
+        // 3. Ambil data Post dengan filter yang diterapkan
+        let posts = await Post.findAll(filterOptions);
+
+        // 4. Ambil kategori untuk dropdown (sudah benar)
+        const categories = await Category.findAll({
+             attributes: ['id', 'name']
+        });
+
+        // 5. Kirim posts dan categories ke template
+        res.render('home', { posts, categories });
+
+    } catch (error) {
+        console.error(error);
+        res.send(error);
     }
+}
+
+
 
     // ==========AUTH============
     static async getRegister(req, res) {
@@ -44,7 +89,7 @@ class Controller {
             })
             res.redirect('/login')
         } catch (error) {
-            console.log(error)
+            console.log(error,' HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
             res.send(error)
         }
     }
@@ -57,6 +102,7 @@ class Controller {
             */
             res.render('login', { error: null }); // default null
         } catch (err) {
+             console.log(error,' HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
             res.send(err);
         }
     }
@@ -106,8 +152,10 @@ class Controller {
                 include: [UserProfile, Post] 
             });
 
-            // const loggedInUserId = req.session.userId; 
-            const loggedInUserId = 3; 
+            const loggedInUserId = req.session.userId; 
+            // const loggedInUserId = 3; 
+            console.log(loggedInUserId,'WWWWWWWWWWWWWWEEEEEEEEEEEELLLLLLLLAAAAAAAAA');
+            
 
         res.render('userProfile', { 
             user,
@@ -118,20 +166,6 @@ class Controller {
         }
     }
 
-    // static async getUser(req, res) {
-    //     try {
-
-    //     } catch (error) {
-    //         res.send(error)
-    //     }
-    // }
-    // static async postUser(req, res) {
-    //     try {
-
-    //     } catch (error) {
-    //         res.send(error)
-    //     }
-    // }
     static async getPost(req, res) {
         try {
             // Ambil kategori untuk dropdown di form
@@ -296,36 +330,52 @@ class Controller {
 
     static async like(req, res) {
         try {
-            const postId = req.params.id;
-            const userId = req.session.userId;
+            // const postId = req.params.id;
+            // const userId = req.session.userId;
 
-            // Cari reaction "like"
-            const likeReaction = await Reaction.findOne({ where: { name: 'like' } });
+            // // Cari reaction "like"
+            // const likeReaction = await Reaction.findOne({ where: { name: 'like' } });
 
-            // Cek apakah user sudah like post ini
-            const existing = await PostReaction.findOne({
-                where: {
-                    UserId: userId,
-                    PostId: postId,
-                    ReactionId: likeReaction.id
-                }
-            });
+            // // Cek apakah user sudah like post ini
+            // const existing = await PostReaction.findOne({
+            //     where: {
+            //         UserId: userId,
+            //         PostId: postId,
+            //         ReactionId: likeReaction.id
+            //     }
+            // });
 
-            if (existing) {
-                // sudah like -> unlike
-                await existing.destroy();
-            } else {
-                // belum -> like
-                await PostReaction.create({
-                    UserId: userId,
-                    PostId: postId,
-                    ReactionId: likeReaction.id
-                });
-            }
+            // if (existing) {
+            //     // sudah like -> unlike
+            //     await existing.destroy();
+            // } else {
+            //     // belum -> like
+            //     await PostReaction.create({
+            //         UserId: userId,
+            //         PostId: postId,
+            //         ReactionId: likeReaction.id
+            //     });
+            // }
 
-            res.redirect('back');
+            // res.redirect('back');
+            const {id} = req.params;
+            let data = await Post.findByPk(id);
+            await data.decrement()
+
         } catch (error) {
             console.error(error);
+        }
+    }
+
+    static async contohhhh(req, res) {
+        try {
+            const {id} = req.params;
+            await Post.destroy({
+                where:id
+            })
+            res.redirect(`/users/${id}`)
+        } catch (err) {
+            res.send(err);
         }
     }
 
