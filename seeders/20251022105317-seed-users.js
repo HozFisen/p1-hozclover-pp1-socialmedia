@@ -9,7 +9,6 @@ module.exports = {
       el.createdAt = el.updatedAt = new Date();
       return el;
     });
-
     await queryInterface.bulkInsert("Users", data);
   },
 

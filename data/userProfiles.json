@@ -30,13 +30,5 @@
     "isPrivate": true,
     "UserId": 4,
     "profilePicture": "https://randomuser.me/api/portraits/women/41.jpg"
-  },
-  {
-    "firstName": "Ethan",
-    "lastName": "Wright",
-    "tagLine": "Building the future 🚀",
-    "isPrivate": false,
-    "UserId": 5,
-    "profilePicture": "https://randomuser.me/api/portraits/men/51.jpg"
   }
 ]
