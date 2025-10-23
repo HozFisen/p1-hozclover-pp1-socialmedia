@@ -5,70 +5,6 @@ const salt = bcrypt.genSaltSync(10)
 
 class Controller {
 
-    // Dummy data
-   static async posts(req, res) {
-    try {
-        // const { search, category } = req.query;
-
-        // let whereCondition = {};
-        // if(search) whereCondition.title = { [Op.like]: `%${search}%` };
-        // if(category) whereCondition.CategoryId = category;
-
-        // const posts = await Post.findAll({
-        //     where: whereCondition,
-        //     include: [
-        //         {
-        //             model: User,
-        //             include: [UserProfile]
-        //         }
-        //     ],
-        //     order: [['createdAt', 'DESC']]
-        // });
-
-        // const categories = await Category.findAll(); // Supaya bisa render dropdown
-
-        // res.render('home', { posts, categories, query: search || '' });
-
-
-        const { category } = req.query; // Akan menjadi string (misal: '1') atau undefined
-        
-        let filterOptions = {
-            order: [['createdAt', 'DESC']],
-            include: [
-                {
-                    model: User,
-                    include: [UserProfile]
-                }
-            ]
-        };
-
-        // 2. Tambahkan kondisi WHERE jika kategori dipilih
-        if (category) {
-            // Pastikan CategoryId adalah angka (jika disimpan sebagai integer di DB)
-            filterOptions.where = {
-                CategoryId: +category // Mengubah string menjadi integer
-            };
-        }
-
-        // 3. Ambil data Post dengan filter yang diterapkan
-        let posts = await Post.findAll(filterOptions);
-
-        // 4. Ambil kategori untuk dropdown (sudah benar)
-        const categories = await Category.findAll({
-             attributes: ['id', 'name']
-        });
-
-        // 5. Kirim posts dan categories ke template
-        res.render('home', { posts, categories });
-
-    } catch (error) {
-        console.error(error);
-        res.send(error);
-    }
-}
-
-
-
     // ==========AUTH============
     static async getRegister(req, res) {
         try {
@@ -368,20 +304,6 @@ class Controller {
             console.error(error);
         }
     }
-
-    static async contohhhh(req, res) {
-        try {
-            const {id} = req.params;
-            await Post.destroy({
-                where:id
-            })
-            res.redirect(`/users/${id}`)
-        } catch (err) {
-            res.send(err);
-        }
-    }
-
-
 }
 
 module.exports = Controller;

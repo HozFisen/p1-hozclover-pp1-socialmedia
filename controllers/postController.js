@@ -138,7 +138,27 @@ class postController {
         }
     }
 
-
+    static async delete(req, res) {
+        try {
+            const {id} = req.params;
+            await Post.destroy({
+                where:id
+            })
+            res.redirect(`/users/${id}`)
+        } catch (err) {
+            res.send(err);
+        }
+    }
+    static async delete(req, res) {
+        try {
+            const {id} = req.params;
+            let data = await Post.findByPk(id);
+            await data.destroy()
+            res.redirect(`/users/${id}`)
+        } catch (err) {
+            res.send(err);
+        }
+    }
 }
 
 module.exports = postController;

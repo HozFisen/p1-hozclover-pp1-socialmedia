@@ -41,23 +41,25 @@
                         <input type="hidden" name="UserId" value="<%= data.UserId %>">
                         <!-- Foto Profil -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold">Foto Profil</label>
+                            <label class="form-label fw-bold">Foto Profil (URL)</label>
                             <div class="profile-pic-container">
                                 <img id="previewProfilePic"
                                      src="<%= data.profilePicture || '/images/default-profile.png' %>" 
                                      alt="Foto Profil Saat Ini" class="me-4">
                                 <div>
-                                    <input class="form-control" type="file" id="profilePicture" name="profilePicture" accept="image/*">
-                                    <small class="form-text text-muted">Maksimal ukuran file 2MB.</small>
+                                    <input class="form-control" type="url" id="profilePicture" name="profilePicture" 
+                                           placeholder="Masukkan URL gambar..." value="<%= data.profilePicture || '' %>">
+                                    <small class="form-text text-muted">Masukkan URL gambar yang valid.</small>
                                 </div>
                             </div>
                         </div>
+
 
                         <!-- Nama Depan -->
                         <div class="mb-3">
                             <label for="firstName" class="form-label">Nama Depan</label>
                             <input type="text" class="form-control" id="firstName" name="firstName" 
-                                   value="<%= data.firstName %>" required>
+                                   value="<%= data.firstName %>" >
                         </div>
 
                         <!-- Nama Belakang -->
