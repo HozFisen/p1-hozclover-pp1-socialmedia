@@ -10,12 +10,14 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       email: {
+        unique: true,
         type: Sequelize.STRING
       },
       password: {
         type: Sequelize.STRING
       },
       username: {
+        unique: true,
         type: Sequelize.STRING
       },
       role: {

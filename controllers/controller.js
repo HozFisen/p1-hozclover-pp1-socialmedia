@@ -19,6 +19,7 @@ class Controller {
 
             res.render('home', { posts });
         } catch (error) {
+            console.log(error)
             res.send(error);
         }
     }
@@ -34,7 +35,7 @@ class Controller {
     static async postRegister(req, res) {
         try {
             const { email, username, password } = req.body;
-            console.log(req.body, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+            // console.log(req.body, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
             await User.create({
                 email,
                 password,
