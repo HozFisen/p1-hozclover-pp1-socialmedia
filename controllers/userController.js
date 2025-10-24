@@ -34,6 +34,7 @@ class userController {
 
     static async userProfile(req, res) {
         try {
+            // userIp incorrect
             const { id } = req.params;
             const user = await User.findByPk(id, {
                 include: [UserProfile, Post] 
