@@ -144,7 +144,7 @@
        </div>
       
 <!-- User Posts -->
-<% if (active.userId === user.id || active.role === 'admin') { %>
+<% if (!user.UserProfile?.isPrivate || (active.userId === user.id || active.role === 'admin')) { %>
 <div class="post-grid">
   <% if (user.Posts && user.Posts.length > 0) { %>
     <% user.Posts.forEach(post => { %>
