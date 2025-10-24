@@ -1,21 +1,37 @@
 const { User, UserProfile, Category, Post } = require('../models/index');
 const bcrypt = require('bcryptjs')
+const {Op} = require('sequelize')
 const salt = bcrypt.genSaltSync(10)
 const getRegion = require('../helpers/helper')
 
 class userController {
     // USER MANAGER
-    static async allUsers(req, res) {
-        try {
-            const users = await User.findAll({
-                include: UserProfile
-            })
+   static async allUsers(req, res) {
+    try {
+        const {search} = req.query// ambil query search
+        console.log(req.query,'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD');
+        
+        let users = await User.findAll({
+            include: UserProfile,
+        });
 
-            res.render('users', { users })
-        } catch (error) {
-            res.send(error)
+        if(search){
+            users = await User.findAll({
+            include: UserProfile,
+            where: {
+                username: {
+                    [Op.iLike]: `%${search}%` // untuk Postgres, case-insensitive
+                }
+            }
+        });
         }
+
+        res.render('users', { users });
+    } catch (error) {
+        res.send(error);
     }
+}
+
     static async userProfile(req, res) {
         try {
             const { id } = req.params;

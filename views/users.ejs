@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Explore Users</title>
@@ -12,28 +13,78 @@
         }
         h1 {
             text-align: center;
+            margin-bottom: 20px;
         }
+
+        /* Search Box */
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 8px 0 0 8px;
+            border: 1px solid #000;
+            /* border hitam */
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #000;
+            /* fokus hitam */
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+            /* shadow hitam */
+        }
+
+        .search-box button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #000;
+            /* tombol hitam */
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 0 8px 8px 0;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-box button:hover {
+            background-color: #333;
+            /* hover tombol lebih gelap */
+        }
+
+        /* User Grid */
         .user-grid {
             display: flex;
-            flex-direction: column; /* biar ke bawah */
+            flex-direction: column;
+            /* biar ke bawah */
             gap: 15px;
-            margin-top: 30px;
             max-width: 500px;
             margin-inline: auto;
         }
+
         .user-card {
             background: white;
             border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             padding: 15px;
             display: flex;
             align-items: center;
             gap: 15px;
             transition: transform 0.2s ease;
         }
+
         .user-card:hover {
             transform: translateY(-3px);
         }
+
         .profile-pic {
             width: 60px;
             height: 60px;
@@ -41,41 +92,51 @@
             object-fit: cover;
             background-color: #eee;
         }
+
         .username {
             font-weight: 600;
             color: #000;
             text-decoration: none;
             font-size: 1.1rem;
         }
+
         .username:hover {
             text-decoration: underline;
         }
+
         .tagline {
             font-size: 0.9rem;
             color: #777;
         }
     </style>
 </head>
+
 <body>
     <h1>Explore Users</h1>
 
+    <!-- Search Box -->
+    <form method="GET" action="/users" class="search-box">
+        <input type="text" name="search" placeholder="Search users by username...">
+        <button type="submit">Search</button>
+    </form>
+
     <div class="user-grid">
-        <% users.forEach(u => { %>
+        <% users.forEach(u=> { %>
             <div class="user-card">
                 <a href="/users/<%= u.id %>">
-                    <img 
-                        src="<%= u.UserProfile?.profilePicture || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlR_n4KeBSnrxA8Fl8xOiWLWxhvH0X6bKp8A&s' %>" 
-                        alt="Profile Picture" 
-                        class="profile-pic"
-                    >
+                    <img src="<%= u.UserProfile?.profilePicture || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlR_n4KeBSnrxA8Fl8xOiWLWxhvH0X6bKp8A&s' %>"
+                        alt="Profile Picture" class="profile-pic">
                 </a>
                 <div>
                     <a href="/users/<%= u.id %>" class="username">@<%= u.username %></a>
-                    <div class="tagline"><%= u.UserProfile?.tagLine || '' %></div>
+                    <div class="tagline">
+                        <%= u.UserProfile?.tagLine || '' %>
+                    </div>
                 </div>
             </div>
-        <% }) %>
+            <% }) %>
     </div>
     <%- include('bottom') %>
 </body>
+
 </html>

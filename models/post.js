@@ -25,9 +25,14 @@ static associate(models) {
 }
     // Getter or static method
     get formatDate() {
-      format = new Date(this.date).toLocaleDateString()
-      return `${format}`
-    }
+  const formatted = new Date(this.createdAt).toLocaleDateString('id-ID', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  });
+  return formatted;
+}
+
   }
   Post.init({
     title: {
@@ -46,8 +51,13 @@ static associate(models) {
         notNull:{msg: "Please fill content"}
       }
     },
-    imageUrl: {
+    imageUrl:  {
       type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty:{msg: "Please make a image url"},
+        notNull:{msg: "Please make a image url"}
+      }
     },
     likes: {
       type:DataTypes.INTEGER,
