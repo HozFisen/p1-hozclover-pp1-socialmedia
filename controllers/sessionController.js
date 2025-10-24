@@ -103,7 +103,10 @@ class SessionController {
             }
         } catch (error) {
             console.log(error)
-            res.send(error)
+            if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+                const errorMessages = error.errors.map(err => err.message);
+                res.status(400).render('login', { errors: errorMessages });
+            } else {res.send(error)}
         }
     }
     static logout(req, res) {

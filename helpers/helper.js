@@ -7,7 +7,15 @@ async function getRegion(ip, timeoutMs = 2000) {
 
   try {
     const data = await Promise.race([ipLocation(ip), timeout]);
-    return data.region || 'Unknown Location';
+
+    const region =
+      typeof data.region === 'string'
+        ? data.region
+        : data.region && typeof data.region.name === 'string'
+        ? data.region.name
+        : null;
+
+    return region || data.city || data.country || 'Unknown Location';
   } catch (err) {
     if (err.message === 'timeout') {
       console.warn(`IP lookup timed out for ${ip}`);

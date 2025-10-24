@@ -144,6 +144,7 @@
        </div>
       
 <!-- User Posts -->
+<% if (active.userId === user.id || active.role === 'admin') { %>
 <div class="post-grid">
   <% if (user.Posts && user.Posts.length > 0) { %>
     <% user.Posts.forEach(post => { %>
@@ -163,7 +164,11 @@
     <p class="text-center text-muted mt-4">This user hasn’t posted anything yet.</p>
   <% } %>
 </div>
-
+<% } else { %>
+<div>
+  <p style="text-align: center;">This user is privated!</p>
+</div>
+<% } %>
   <%- include('bottom') %>
 </body>
 </html>

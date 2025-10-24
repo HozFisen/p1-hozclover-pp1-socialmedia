@@ -25,7 +25,7 @@ static associate(models) {
 }
     // Getter or static method
     get formatDate() {
-  const formatted = new Date(this.createdAt).toLocaleDateString('id-ID', {
+    const formatted = new Date(this.createdAt).toLocaleDateString('id-ID', {
     day: '2-digit',
     month: 'long',
     year: 'numeric'
@@ -46,7 +46,7 @@ static associate(models) {
     content: {
       type: DataTypes.TEXT,
       allowNull: false,
-      validate: { // Perlu validasi word
+      validate: {
         notEmpty:{msg: "Please fill content"},
         notNull:{msg: "Please fill content"}
       }

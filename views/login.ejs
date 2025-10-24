@@ -60,9 +60,7 @@
     </div>
 <% } %>
     <h2>Login</h2>
-    <% if (typeof error !== 'undefined' && error) { %>
-      <div class="alert alert-danger"><%= error %></div>
-    <% } %>
+
     <form method="POST" action="/login">
       <div class="mb-3">
         <label for="email" class="form-label">Email address</label>

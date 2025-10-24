@@ -159,6 +159,7 @@
   <div class="container mt-4">
     <% if (posts && posts.length > 0) { %>
       <% posts.forEach(post => { %>
+        <% if (!post.User.UserProfile.isPrivate) { %>
         <div class="post-card">
           <div class="post-user">
             <a href="/users/<%= post.User.id %>" class="text-decoration-none text-dark d-flex align-items-center">
@@ -182,7 +183,9 @@
             </form>
           </div>
             
-        </div> <% }) %>
+        </div> 
+        <% } else {}%>
+        <% }) %>
     <% } else { %>
       <p class="text-center text-secondary">No posts yet.</p>
     <% } %>
